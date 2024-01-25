@@ -1,8 +1,12 @@
 package ccompiler.parser;
 
+import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIfElse;
+import ccompiler.parser.expression.AEMinus;
+import ccompiler.parser.expression.AEMultiply;
+import ccompiler.parser.expression.AEPlus;
 import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
 import ccompiler.parser.feature.AEFunction;
@@ -136,5 +140,49 @@ public class ASTPrinter implements ASTVisitor {
         graph.addEdge(enclosedExpression, expression, new LabelEdge(""));
 	
     }
+
+	@Override
+	public void visitPlus(AEPlus plus) {
+        graph.addVertex(plus);
+        AEExpression leftSide = plus.getLeftSide();
+        AEExpression rightSide = plus.getRightSide();
+        graph.addVertex(leftSide);
+        graph.addVertex(rightSide);
+        graph.addEdge(plus, leftSide, new LabelEdge(""));
+        graph.addEdge(plus, rightSide, new LabelEdge(""));
+	}
+
+	@Override
+	public void visitMinus(AEMinus minus) {
+        graph.addVertex(minus);
+        AEExpression leftSide = minus.getLeftSide();
+        AEExpression rightSide = minus.getRightSide();
+        graph.addVertex(leftSide);
+        graph.addVertex(rightSide);
+        graph.addEdge(minus, leftSide, new LabelEdge(""));
+        graph.addEdge(minus, rightSide, new LabelEdge(""));
+	}
+
+	@Override
+	public void visitMultiply(AEMultiply multiply) {
+        graph.addVertex(multiply);
+        AEExpression leftSide = multiply.getLeftSide();
+        AEExpression rightSide = multiply.getRightSide();
+        graph.addVertex(leftSide);
+        graph.addVertex(rightSide);
+        graph.addEdge(multiply, leftSide, new LabelEdge(""));
+        graph.addEdge(multiply, rightSide, new LabelEdge(""));
+	}
+
+	@Override
+	public void visitDivide(AEDivide divide) {
+        graph.addVertex(divide);
+        AEExpression leftSide = divide.getLeftSide();
+        AEExpression rightSide = divide.getRightSide();
+        graph.addVertex(leftSide);
+        graph.addVertex(rightSide);
+        graph.addEdge(divide, leftSide, new LabelEdge(""));
+        graph.addEdge(divide, rightSide, new LabelEdge(""));
+	}
 
 }

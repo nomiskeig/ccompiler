@@ -41,4 +41,9 @@ public class LexerToken {
         return column;
     }
 
+    @Override
+    public String toString() {
+        return "LexerToken at row " + this.row + ", column " + this.column + " of type " + this.type;
+    }
+
 }

@@ -154,6 +154,7 @@ public class Parser {
                     expect(Keyword.LOOP);
                     AEExpression bodyExpression = this.parseExpression();
                     expect(Keyword.POOL);
+                    // TODO: this is missing a return statement
                 }
                 if (startToken.getKeyword() == Keyword.LET) {
                     return this.parseLet();
@@ -182,17 +183,30 @@ public class Parser {
                     return new AEFalse();
                 }
             }
+
             case STRING: {
                 this.lexer.getNextToken();
-                return new AEString(startToken.getValue());
+                if (!this.canFollowExpr(this.lexer.peek())) {
+                    return new AEString(startToken.getValue());
+                }
+                return this.parseRecursiveExpression(new AEString(startToken.getValue()));
             }
             case INTEGER: {
                 this.lexer.getNextToken();
-                return new AEInteger(startToken.getValue());
+                if (!this.canFollowExpr(this.lexer.peek())) {
+                    System.out.println("parsing non recursive integer");
+                    return new AEInteger(startToken.getValue());
+                }
+                System.out.println("parssing recursive integer");
+                return this.parseRecursiveExpression(new AEInteger(startToken.getValue()));
 
             }
             case ID: {
-                return this.parseIDExpression();
+                this.lexer.getNextToken();
+                if (!this.canFollowExpr(this.lexer.peek())) {
+                    return new AEIdentifier(startToken.getValue());
+                }
+                return this.parseRecursiveExpression(new AEIdentifier(startToken.getValue()));
             }
             case TILDE: {
                 this.lexer.getNextToken();
@@ -209,10 +223,19 @@ public class Parser {
                 return this.parseExpressionBlock();
             }
             default:
-                return this.parseRecursiveExpression();
+                                     System.out.println("default path");
+                return this.parseRecursiveExpression(null);
 
         }
 
+    }
+
+    private boolean canFollowExpr(LexerToken peek) {
+        return peek.getType() == LexerTokenType.PLUS || peek.getType() == LexerTokenType.MINUS
+                || peek.getType() == LexerTokenType.DIVIDE || peek.getType() == LexerTokenType.MULTIPLY
+                || peek.getType() == LexerTokenType.SMALLER || peek.getType() == LexerTokenType.SMALLER_EQUALS
+                || peek.getType() == LexerTokenType.EQUALS || peek.getType() == LexerTokenType.AT
+                || peek.getType() == LexerTokenType.ASSIGNMENT || peek.getType() == LexerTokenType.LEFT_PARANTHESIS;
     }
 
     private AECase parseCase() throws ParseException {
@@ -273,22 +296,24 @@ public class Parser {
 
     }
 
-    private AEExpression parseIDExpression() throws ParseException {
-        LexerToken IDToken = expect(LexerTokenType.ID);
-        LexerToken decisionToken = this.lexer.peek();
-        switch (decisionToken.getType()) {
-            case LEFT_PARANTHESIS:
-                return this.parseMethodCall(IDToken);
-            case ASSIGNMENT:
-                this.expect(LexerTokenType.ASSIGNMENT);
-                AEExpression expression = this.parseExpression();
-                return new AEAssignment(new AEIdentifier(IDToken.getValue()), expression);
-            default:
-                this.lexer.getNextToken();
-                return new AEIdentifier(IDToken.getValue());
-        }
-
-    }
+    /*
+     * private AEExpression parseExprExpression() throws ParseException {
+     * LexerToken IDToken = expect(LexerTokenType.ID);
+     * LexerToken decisionToken = this.lexer.peek();
+     * switch (decisionToken.getType()) {
+     * case LEFT_PARANTHESIS:
+     * return this.parseMethodCall(IDToken);
+     * case ASSIGNMENT:
+     * this.expect(LexerTokenType.ASSIGNMENT);
+     * AEExpression expression = this.parseExpression();
+     * return new AEAssignment(new AEIdentifier(IDToken.getValue()), expression);
+     * default:
+     * this.lexer.getNextToken();
+     * return new AEIdentifier(IDToken.getValue());
+     * }
+     * 
+     * }
+     */
 
     /**
      * Parses ID([expr [[, expr]]*])
@@ -330,9 +355,11 @@ public class Parser {
         return new AEExpressionBlock(expressions);
     }
 
-    private AEExpression parseRecursiveExpression() throws ParseException {
-        AEExpression startExpression = this.parseExpression();
-        LexerToken decisionToken = this.lexer.getNextToken();
+    private AEExpression parseRecursiveExpression(AEExpression startExpression) throws ParseException {
+        if (startExpression == null) {
+            startExpression = this.parseExpression();
+        }
+        LexerToken decisionToken = this.lexer.peek();
         switch (decisionToken.getType()) {
             case AT:
             case DOT: {
@@ -340,6 +367,7 @@ public class Parser {
             }
             case PLUS: {
                 expect(LexerTokenType.PLUS);
+                System.out.println("parsing plus");
                 return new AEPlus(startExpression, this.parseExpression());
 
             }

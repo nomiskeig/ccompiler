@@ -11,9 +11,24 @@ public class AEDivide extends AEExpression {
         this.rightSide = rightSide;
     }
 
+	public AEExpression getLeftSide() {
+		return leftSide;
+	}
+
+	public AEExpression getRightSide() {
+		return rightSide;
+	}
+
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+        visitor.visitDivide(this);
+        this.leftSide.acceptVisitor(visitor);
+        this.rightSide.acceptVisitor(visitor);
 	}
+
+
+    @Override
+    public String toString() {
+        return "/";
+    }
 }

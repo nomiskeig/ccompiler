@@ -40,7 +40,7 @@ class ParserTest {
         String programCode  = """
             class Test {
                 fun(): Integer {
-                    123 + (44/2)
+                    123 + ((44/2) * 48)
                 };
             };
             """;
@@ -48,6 +48,18 @@ class ParserTest {
         File file = new File("/home/simon/dev/ccompiler/graphs/mathgraph.dot");
         this.printProgram(programCode, file);
 
+    }
+    @Test
+    void parsesPlus() throws ParseException {
+        String programCode = """
+            class Test {
+                fun(): Integer {
+                    123 + 456
+            };
+            };
+            """;
+        File file = new File("/home/simon/dev/ccompiler/graphs/plusgraph.dot");
+        this.printProgram(programCode, file);
     }
 
     private void printProgram(String programCode, File file) throws ParseException {
