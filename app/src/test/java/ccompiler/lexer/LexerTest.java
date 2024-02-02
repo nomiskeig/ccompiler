@@ -21,7 +21,7 @@ class LexerTest {
         assertEquals("Type", token.getValue());
 
     }
-    @Test void parsesIntType() {
+    @Test void parsesIntTypeTest() {
         Lexer lexer = new Lexer("Int");
         LexerToken token = lexer.getNextToken();
         assertEquals(LexerTokenType.TYPE, token.getType());

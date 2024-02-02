@@ -4,20 +4,19 @@ import org.junit.jupiter.api.Test;
 
 import ccompiler.lexer.Lexer;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.File;
 
 class ParserTest {
     @Test
-    void parsesProgram() throws ParseException{
+    void parsemProgram() throws ParseException{
         String programCode = "class Int inherits Object {};class Other {};";
         File file = new File("/home/simon/dev/ccompiler/graphs/graph.dot");
         this.printProgram(programCode, file);
 
     }
     @Test
-    void parsesBiggerProgram() throws ParseException {
+    public void parsesBiggerProgramTest() throws ParseException {
         String programCode = """ 
             class A {
                 local1: String <- 456;

@@ -22,6 +22,7 @@ public enum Keyword {
     NOT(matchesCaseInsensitive("not")),
     TRUE(matchesFirstLower("true"));
 
+
     private final MatchFunction matchFunction;
 
     static private MatchFunction matchesCaseInsensitive(String compare) {
