@@ -15,8 +15,21 @@ public class AEInversion extends AEExpression {
 
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
 		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
 	}
+
+    @Override
+    public String getGraphRepresentation() {
+        return "~";
+    }
+
+
+    @Override
+    public String toString() {
+        return "~" + this.value.toString();
+
+    }
+
+    
 
 }

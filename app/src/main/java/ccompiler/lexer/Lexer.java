@@ -187,7 +187,8 @@ public class Lexer {
     private LexerToken tryToParseKeyWord() {
         String potential = "";
         while (this.currentCharIndex + potential.length() < this.sourceCode.length()) {
-            if (isWhiteSpace(this.sourceCode.charAt(this.currentCharIndex + potential.length()))) {
+            char nextChar = this.sourceCode.charAt(this.currentCharIndex + potential.length());
+            if (isWhiteSpace(nextChar) || nextChar == ';') {
                 break;
             }
             potential += this.sourceCode.charAt(this.currentCharIndex + potential.length());

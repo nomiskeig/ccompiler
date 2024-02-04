@@ -16,6 +16,10 @@ public class AEString extends AEExpression {
 
     @Override
     public String toString() {
+        return "\"" + this.value + "\"";
+    }
+    @Override
+    public String getGraphRepresentation() {
         return this.value;
     }
 

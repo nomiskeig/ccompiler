@@ -7,10 +7,23 @@ public  class AEIsVoid extends AEExpression {
     public AEIsVoid(AEExpression expression) {
         this.expression = expression;
     }
-	@Override
+	public AEExpression getExpression() {
+        return expression;
+    }
+    @Override
 	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+        visitor.visitVoid(this);
+        this.expression.acceptVisitor(visitor);
+
 	}
+
+    @Override
+    public String toString() {
+        return "isvoid " + this.expression.toString();
+    }
+    @Override
+    public String getGraphRepresentation() {
+        return "isVoid";
+    }
 
 }

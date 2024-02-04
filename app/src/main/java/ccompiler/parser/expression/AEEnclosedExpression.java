@@ -20,6 +20,11 @@ public class AEEnclosedExpression extends AEExpression {
 	}
     @Override
     public String toString() {
+        return "(" + this.expression.toString() + ")";
+    }
+
+    @Override
+    public String getGraphRepresentation() {
         return "( )";
     }
 

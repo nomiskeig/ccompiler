@@ -41,17 +41,30 @@ public class AEFunction extends AEFeature {
         return expression;
     }
 
-	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
+    @Override
+    public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitFunction(this);
         this.expression.acceptVisitor(visitor);
 
-	}
+    }
 
     @Override
     public String toString() {
-        return "function " + this.identifier.toString() + " : " + this.type.toString();
+        String res = this.identifier.toString() + "(";
+        for (AEFormal formal : this.formals) {
+            res += formal.toString() + ", ";
+        }
+        if (res.endsWith(", ")) {
+            res = res.substring(0, res.length() - 2);
+        }
+        res += ") : " + this.type.toString() + " {\n" + this.expression.toString() + "\n}";
+        return res;
 
+    }
+
+    @Override
+    public String getGraphRepresentation() {
+        return "function " + this.identifier.toString() + " : " + this.type.toString();
     }
 
 }

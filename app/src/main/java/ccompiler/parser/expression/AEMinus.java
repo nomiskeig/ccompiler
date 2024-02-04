@@ -31,4 +31,10 @@ public class AEMinus extends AEExpression {
     public String toString() {
         return "-";
     }
+
+    @Override
+    public String getGraphRepresentation() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+    }
 }

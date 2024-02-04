@@ -14,28 +14,36 @@ public class AEIfElse extends AEExpression {
 
     }
 
-	public AEExpression getCondExpression() {
-		return condExpression;
-	}
+    public AEExpression getCondExpression() {
+        return condExpression;
+    }
 
-	public AEExpression getThenExpression() {
-		return thenExpression;
-	}
+    public AEExpression getThenExpression() {
+        return thenExpression;
+    }
 
-	public AEExpression getElseExpression() {
-		return elseExpression;
-	}
+    public AEExpression getElseExpression() {
+        return elseExpression;
+    }
 
-	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
+    @Override
+    public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitIfElse(this);
         this.condExpression.acceptVisitor(visitor);
         this.thenExpression.acceptVisitor(visitor);
         this.elseExpression.acceptVisitor(visitor);
 
-	}
+    }
+
     @Override
     public String toString() {
+        return "if " + this.condExpression.toString() + " then " + this.thenExpression.toString() + " else "
+                + this.elseExpression + "fi";
+
+    }
+
+    @Override
+    public String getGraphRepresentation() {
         return "if else";
     }
 

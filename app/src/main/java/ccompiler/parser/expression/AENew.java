@@ -17,4 +17,9 @@ public class AENew extends AEExpression {
     public String toString() {
         return "new " + this.type.toString();
     }
+
+    @Override
+    public String getGraphRepresentation() {
+        return "new " + this.type.toString();
+    }
 }

@@ -29,6 +29,11 @@ public class AEPlus extends AEExpression {
 
     @Override
     public String toString() {
+        return this.leftSide.toString() + " + "  +this.rightSide.toString();
+    }
+
+    @Override
+    public String getGraphRepresentation() {
         return "+";
     }
 }

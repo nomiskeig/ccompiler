@@ -1,6 +1,5 @@
 package ccompiler.lexer;
 
-
 public enum Keyword {
     CLASS(matchesCaseInsensitive("class")),
     ELSE(matchesCaseInsensitive("else")),

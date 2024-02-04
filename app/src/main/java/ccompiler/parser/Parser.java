@@ -8,9 +8,7 @@ import ccompiler.lexer.Lexer;
 import ccompiler.lexer.LexerToken;
 import ccompiler.lexer.LexerTokenType;
 import ccompiler.parser.expression.AEAssignment;
-import ccompiler.parser.expression.AECase;
-import ccompiler.parser.expression.AECaseBranch;
-import ccompiler.parser.expression.AEDivide;
+import ccompiler.parser.expression.AECase; import ccompiler.parser.expression.AECaseBranch; import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
 import ccompiler.parser.expression.AEExpression;
@@ -34,6 +32,7 @@ import ccompiler.parser.expression.AESmallerEquals;
 import ccompiler.parser.expression.AEString;
 import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEType;
+import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEFunction;
 import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
@@ -55,7 +54,6 @@ public class Parser {
 
     public AEProgram parseProgram() throws ParseException {
         List<AEClass> classes = new ArrayList<>();
-        // TODO: this needs a better conidition
         while (this.lexer.hasMoreTokens()) {
             classes.add(this.parseClass());
             expect(LexerTokenType.SEMI_COLON);
@@ -154,7 +152,7 @@ public class Parser {
                     expect(Keyword.LOOP);
                     AEExpression bodyExpression = this.parseExpression();
                     expect(Keyword.POOL);
-                    // TODO: this is missing a return statement
+                    return new AEWhile(condExpression, bodyExpression);
                 }
                 if (startToken.getKeyword() == Keyword.LET) {
                     return this.parseLet();
@@ -194,10 +192,8 @@ public class Parser {
             case INTEGER: {
                 this.lexer.getNextToken();
                 if (!this.canFollowExpr(this.lexer.peek())) {
-                    System.out.println("parsing non recursive integer");
                     return new AEInteger(startToken.getValue());
                 }
-                System.out.println("parssing recursive integer");
                 return this.parseRecursiveExpression(new AEInteger(startToken.getValue()));
 
             }
@@ -215,6 +211,10 @@ public class Parser {
             case LEFT_PARANTHESIS: {
                 this.lexer.getNextToken();
                 AEExpression expression = this.parseExpression();
+                if (this.lexer.peek().getType() != LexerTokenType.RIGHT_PARANTHESIS) {
+                    expression = this.parseRecursiveExpression(expression);
+
+                }
                 expect(LexerTokenType.RIGHT_PARANTHESIS);
                 return new AEEnclosedExpression(expression);
 
@@ -223,7 +223,6 @@ public class Parser {
                 return this.parseExpressionBlock();
             }
             default:
-                                     System.out.println("default path");
                 return this.parseRecursiveExpression(null);
 
         }
@@ -367,7 +366,6 @@ public class Parser {
             }
             case PLUS: {
                 expect(LexerTokenType.PLUS);
-                System.out.println("parsing plus");
                 return new AEPlus(startExpression, this.parseExpression());
 
             }

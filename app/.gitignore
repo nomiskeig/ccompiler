@@ -2,3 +2,4 @@ jdt.ls-java-project/
 build/
 bin/
 .metadata/
+.classpath

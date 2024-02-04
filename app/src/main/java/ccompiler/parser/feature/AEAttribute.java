@@ -27,7 +27,12 @@ public class AEAttribute extends AEFeature {
 
     @Override
     public String toString() {
-        return "attribute " + this.identifier.toString() + " : " + this.type.toString();
+        String baseString =  this.identifier.toString() + " : " + this.type.toString();
+        if (this.expression != null) {
+            baseString += " <- " + this.expression.toString();
+        }
+        return baseString;
+
     }
 
 	public AEIdentifier getIdentifier() {
@@ -41,4 +46,9 @@ public class AEAttribute extends AEFeature {
 	public AEExpression getExpression() {
 		return expression;
 	}
+
+    @Override
+    public String getGraphRepresentation() {
+        return "attribute " + this.identifier.toString() + " : " + this.type.toString();
+    }
 }

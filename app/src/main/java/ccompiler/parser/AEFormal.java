@@ -20,6 +20,11 @@ public class AEFormal implements AElement{
 
     @Override
     public String toString() {
+        return this.identifier.toString() + " : " + this.type.toString();
+    }
+
+    @Override
+    public String getGraphRepresentation() {
         return "formal " + this.identifier.toString() + " : " + this.type.toString();
     }
 

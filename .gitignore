@@ -8,3 +8,4 @@ build
 jdt.ls-java-project/
 graphs/
 .metadata/
+.settings/

@@ -2,11 +2,16 @@ package ccompiler.parser;
 
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
+import ccompiler.parser.expression.AEEquals;
 import ccompiler.parser.expression.AEExpression;
+import ccompiler.parser.expression.AEExpressionBlock;
 import ccompiler.parser.expression.AEIfElse;
+import ccompiler.parser.expression.AEIsVoid;
+import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
 import ccompiler.parser.feature.AEFunction;
@@ -95,7 +100,7 @@ public class ASTPrinter implements ASTVisitor {
 
         exporter.setVertexAttributeProvider((v) -> {
             Map<String, Attribute> map = new LinkedHashMap<>();
-            map.put("label", DefaultAttribute.createAttribute(v.toString()));
+            map.put("label", DefaultAttribute.createAttribute(v.getGraphRepresentation()));
             return map;
         });
         exporter.setEdgeAttributeProvider((e) -> {
@@ -118,8 +123,8 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(formal);
     }
 
-	@Override
-	public void visitIfElse(AEIfElse ifElse) {
+    @Override
+    public void visitIfElse(AEIfElse ifElse) {
         graph.addVertex(ifElse);
         AEExpression cond = ifElse.getCondExpression();
         graph.addVertex(cond);
@@ -130,19 +135,19 @@ public class ASTPrinter implements ASTVisitor {
         AEExpression e = ifElse.getElseExpression();
         graph.addVertex(e);
         graph.addEdge(ifElse, e, new LabelEdge("else"));
-	}
+    }
 
-	@Override
-	public void visitEnclosedExpression(AEEnclosedExpression enclosedExpression) {
+    @Override
+    public void visitEnclosedExpression(AEEnclosedExpression enclosedExpression) {
         graph.addVertex(enclosedExpression);
         AEExpression expression = enclosedExpression.getExpression();
         graph.addVertex(expression);
         graph.addEdge(enclosedExpression, expression, new LabelEdge(""));
-	
+
     }
 
-	@Override
-	public void visitPlus(AEPlus plus) {
+    @Override
+    public void visitPlus(AEPlus plus) {
         graph.addVertex(plus);
         AEExpression leftSide = plus.getLeftSide();
         AEExpression rightSide = plus.getRightSide();
@@ -150,10 +155,10 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(rightSide);
         graph.addEdge(plus, leftSide, new LabelEdge(""));
         graph.addEdge(plus, rightSide, new LabelEdge(""));
-	}
+    }
 
-	@Override
-	public void visitMinus(AEMinus minus) {
+    @Override
+    public void visitMinus(AEMinus minus) {
         graph.addVertex(minus);
         AEExpression leftSide = minus.getLeftSide();
         AEExpression rightSide = minus.getRightSide();
@@ -161,10 +166,10 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(rightSide);
         graph.addEdge(minus, leftSide, new LabelEdge(""));
         graph.addEdge(minus, rightSide, new LabelEdge(""));
-	}
+    }
 
-	@Override
-	public void visitMultiply(AEMultiply multiply) {
+    @Override
+    public void visitMultiply(AEMultiply multiply) {
         graph.addVertex(multiply);
         AEExpression leftSide = multiply.getLeftSide();
         AEExpression rightSide = multiply.getRightSide();
@@ -172,10 +177,10 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(rightSide);
         graph.addEdge(multiply, leftSide, new LabelEdge(""));
         graph.addEdge(multiply, rightSide, new LabelEdge(""));
-	}
+    }
 
-	@Override
-	public void visitDivide(AEDivide divide) {
+    @Override
+    public void visitDivide(AEDivide divide) {
         graph.addVertex(divide);
         AEExpression leftSide = divide.getLeftSide();
         AEExpression rightSide = divide.getRightSide();
@@ -183,6 +188,60 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(rightSide);
         graph.addEdge(divide, leftSide, new LabelEdge(""));
         graph.addEdge(divide, rightSide, new LabelEdge(""));
-	}
+    }
+
+    @Override
+    public void visitWhile(AEWhile whileE) {
+        graph.addVertex(whileE);
+        AEExpression cond = whileE.getCondExpression();
+        AEExpression body = whileE.getBodyExpression();
+        graph.addVertex(cond);
+        graph.addVertex(body);
+        graph.addEdge(whileE, cond, new LabelEdge("cond"));
+        graph.addEdge(whileE, body, new LabelEdge("body"));
+
+    }
+
+    @Override
+    public void visitExpressionBlock(AEExpressionBlock expressionBlock) {
+        graph.addVertex(expressionBlock);
+        for (AEExpression expr : expressionBlock.getExpressions()) {
+            graph.addVertex(expr);
+            graph.addEdge(expressionBlock, expr, new LabelEdge(""));
+        }
+
+    }
+
+    @Override
+    public void visitEquals(AEEquals equals) {
+        graph.addVertex(equals);
+        AEExpression leftSide = equals.getLeftSide();
+        AEExpression rightSide = equals.getRightSide();
+        graph.addVertex(leftSide);
+        graph.addVertex(rightSide);
+        graph.addEdge(equals, leftSide, new LabelEdge(""));
+        graph.addEdge(equals, rightSide, new LabelEdge(""));
+    }
+
+    @Override
+    public void visitLet(AELet let) {
+        graph.addVertex(let);
+        for (AEAttribute attr : let.getAttributes()) {
+            graph.addVertex(attr);
+            graph.addEdge(let, attr, new LabelEdge("attribute"));
+        }
+        AEExpression expr = let.getExpression();
+        graph.addVertex(expr);
+        graph.addEdge(let, expr, new LabelEdge("expr"));
+    }
+
+    @Override
+    public void visitVoid(AEIsVoid isVoid) {
+        graph.addVertex(isVoid);
+        AEExpression expr = isVoid.getExpression();
+        graph.addVertex(expr);
+        graph.addEdge(isVoid, expr, new LabelEdge(""));
+        
+    }
 
 }

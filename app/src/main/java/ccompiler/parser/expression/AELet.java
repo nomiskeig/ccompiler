@@ -14,10 +14,38 @@ public class AELet extends AEExpression {
         this.expression = expression;
     }
 
-	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
-	}
+    @Override
+    public void acceptVisitor(ASTVisitor visitor) {
+        visitor.visitLet(this);
+        for (AEAttribute attr : this.attributes) {
+            attr.acceptVisitor(visitor);
+        }
+        this.expression.acceptVisitor(visitor);
+    }
+
+    public List<AEAttribute> getAttributes() {
+        return attributes;
+    }
+
+    public AEExpression getExpression() {
+        return expression;
+    }
+    @Override
+    public String toString() {
+        String res = "let ";
+        for (AEAttribute attr : this.attributes) {
+            res += attr.toString()  + ", ";
+        }
+        if (res.endsWith(", "));
+        res = res.substring(0, res.length()-2);
+        res += " in ";
+        res += this.expression.toString();
+        return res;
+    }
+
+    @Override
+    public String getGraphRepresentation() {
+        return "let";
+    }
 
 }

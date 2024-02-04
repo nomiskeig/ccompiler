@@ -10,4 +10,10 @@ public class AEFalse extends AEExpression {
 		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
 	}
 
+    @Override
+    public String getGraphRepresentation() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+    }
+
 }

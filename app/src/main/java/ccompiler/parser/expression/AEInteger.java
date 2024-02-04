@@ -22,4 +22,9 @@ public class AEInteger extends AEExpression {
         return this.value;
     }
 
+    @Override
+    public String getGraphRepresentation() {
+        return this.value;
+    }
+
 }

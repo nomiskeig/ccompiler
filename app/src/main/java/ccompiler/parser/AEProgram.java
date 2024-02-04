@@ -24,6 +24,16 @@ public class AEProgram implements AElement {
 
     @Override
     public String toString() {
+        String res = "";
+        for (AEClass clas : this.classes) {
+            res += clas.toString() + "\n \n";
+
+        }
+        return res;
+    }
+
+    @Override
+    public String getGraphRepresentation() {
         return "Program";
     }
 
