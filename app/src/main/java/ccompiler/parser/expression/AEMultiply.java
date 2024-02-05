@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEMultiply extends AEExpression {
     private AEExpression leftSide;
@@ -35,5 +36,11 @@ public class AEMultiply extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "*";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 }

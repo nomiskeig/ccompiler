@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEFalse extends AEExpression {
 
@@ -14,6 +15,12 @@ public class AEFalse extends AEExpression {
     public String getGraphRepresentation() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

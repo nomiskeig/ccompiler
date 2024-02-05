@@ -4,13 +4,14 @@ import java.util.List;
 
 import ccompiler.parser.expression.AEType;
 import ccompiler.parser.feature.AEFeature;
+import ccompiler.parser.typechecker.Type;
 
 public class AEClass implements AElement {
-    AEType classType;
+    Type classType;
     AEType inheritType;
     List<AEFeature> features;
 
-    public AEClass(AEType classType, AEType inheritType, List<AEFeature> features) {
+    public AEClass(Type classType, AEType inheritType, List<AEFeature> features) {
         this.classType = classType;
         this.inheritType = inheritType;
         this.features = features;
@@ -49,5 +50,10 @@ public class AEClass implements AElement {
             res += " inherits " + this.inheritType.toString();
         }
         return res;
+    }
+
+    @Override
+    public Type getType() {
+        return this.classType;
     }
 }

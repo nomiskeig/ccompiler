@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEIfElse extends AEExpression {
     private AEExpression condExpression;
@@ -45,6 +46,12 @@ public class AEIfElse extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "if else";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

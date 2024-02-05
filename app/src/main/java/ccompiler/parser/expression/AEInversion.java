@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEInversion extends AEExpression {
     private AEExpression value;
@@ -28,6 +29,12 @@ public class AEInversion extends AEExpression {
     public String toString() {
         return "~" + this.value.toString();
 
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
     

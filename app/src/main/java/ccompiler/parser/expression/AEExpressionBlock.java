@@ -3,6 +3,7 @@ package ccompiler.parser.expression;
 import java.util.List;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEExpressionBlock extends AEExpression {
     private List<AEExpression> expressions;
@@ -37,6 +38,12 @@ public class AEExpressionBlock extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "{ }";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

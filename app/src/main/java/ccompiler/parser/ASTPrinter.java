@@ -48,7 +48,7 @@ public class ASTPrinter implements ASTVisitor {
 
     }
 
-    private Graph<AElement, LabelEdge> graph = new SimpleGraph<>(LabelEdge.class);
+    private Graph<GraphElement, LabelEdge> graph = new SimpleGraph<>(LabelEdge.class);
 
     public ASTPrinter() {
     }
@@ -96,7 +96,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     public void exportToDOT(File file) {
-        DOTExporter<AElement, LabelEdge> exporter = new DOTExporter<>(v -> String.valueOf(v.hashCode()));
+        DOTExporter<GraphElement, LabelEdge> exporter = new DOTExporter<>(v -> String.valueOf(v.hashCode()));
 
         exporter.setVertexAttributeProvider((v) -> {
             Map<String, Attribute> map = new LinkedHashMap<>();
@@ -151,6 +151,7 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(plus);
         AEExpression leftSide = plus.getLeftSide();
         AEExpression rightSide = plus.getRightSide();
+        System.out.println("rightSide: " +rightSide.toString());
         graph.addVertex(leftSide);
         graph.addVertex(rightSide);
         graph.addEdge(plus, leftSide, new LabelEdge(""));

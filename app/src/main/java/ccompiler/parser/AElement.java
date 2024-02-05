@@ -1,6 +1,8 @@
 package ccompiler.parser;
 
-public interface AElement {
+import ccompiler.parser.typechecker.Type;
+
+public interface AElement extends GraphElement {
     void acceptVisitor(ASTVisitor visitor);
-    String getGraphRepresentation();
+    Type getType();
 }

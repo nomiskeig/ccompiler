@@ -4,13 +4,14 @@ import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEType;
+import ccompiler.parser.typechecker.Type;
 
 public class AEAttribute extends AEFeature {
     private AEIdentifier identifier;
-    private AEType type;
+    private Type type;
     private AEExpression expression;
 
-    public AEAttribute(AEIdentifier id, AEType type, AEExpression expression) {
+    public AEAttribute(AEIdentifier id, Type type, AEExpression expression) {
         this.identifier = id;
         this.type = type;
         this.expression = expression;
@@ -39,9 +40,11 @@ public class AEAttribute extends AEFeature {
 		return identifier;
 	}
 
-	public AEType getType() {
-		return type;
-	}
+
+    public Type getType() {
+        return this.type;
+    }
+    
 
 	public AEExpression getExpression() {
 		return expression;

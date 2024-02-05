@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEWhile extends AEExpression {
     private AEExpression condExpression;
@@ -35,6 +36,12 @@ public class AEWhile extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "while";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

@@ -7,17 +7,18 @@ import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEType;
+import ccompiler.parser.typechecker.Type;
 
 /**
  * 
  */
 public class AEFunction extends AEFeature {
     private AEIdentifier identifier;
-    private AEType type;
+    private Type type;
     private List<AEFormal> formals;
     private AEExpression expression;
 
-    public AEFunction(AEIdentifier identifier, List<AEFormal> formals, AEType type, AEExpression expression) {
+    public AEFunction(AEIdentifier identifier, List<AEFormal> formals, Type type, AEExpression expression) {
         this.identifier = identifier;
         this.type = type;
         this.formals = formals;
@@ -29,7 +30,7 @@ public class AEFunction extends AEFeature {
         return identifier;
     }
 
-    public AEType getType() {
+    public Type getType() {
         return type;
     }
 

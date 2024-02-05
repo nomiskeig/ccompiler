@@ -2,6 +2,8 @@ package ccompiler.parser;
 
 import java.util.List;
 
+import ccompiler.parser.typechecker.Type;
+
 public class AEProgram implements AElement {
     private List<AEClass> classes;
 
@@ -35,6 +37,12 @@ public class AEProgram implements AElement {
     @Override
     public String getGraphRepresentation() {
         return "Program";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO: Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

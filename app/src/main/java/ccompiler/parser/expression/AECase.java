@@ -3,6 +3,7 @@ package ccompiler.parser.expression;
 import java.util.List;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AECase extends AEExpression {
     private AEExpression expression;
@@ -23,6 +24,12 @@ public class AECase extends AEExpression {
     public String getGraphRepresentation() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

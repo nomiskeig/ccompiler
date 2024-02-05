@@ -2,7 +2,6 @@ package ccompiler.parser;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
 import ccompiler.lexer.Lexer;
 
 import java.io.File;
@@ -87,8 +86,8 @@ class ParserTest {
         ASTPrinter printer = new ASTPrinter();
         program.acceptVisitor(printer);
         printer.exportToDOT(file);
-        //System.out.println("Reduced source:\n" + reduceProgram(programCode));
-        //System.out.println("Reduced compiled:\n" + reduceProgram(program.toString()));
+        System.out.println("Reduced source:\n" + reduceProgram(programCode));
+        System.out.println("Reduced compiled:\n" + reduceProgram(program.toString()));
         
 
         assertTrue(reduceProgram(programCode).equals(reduceProgram(program.toString())));
@@ -106,5 +105,5 @@ class ParserTest {
         return res;
 
     }
-
 }
+

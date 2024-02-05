@@ -1,11 +1,12 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AENew extends AEExpression {
-    private AEType type;
+    private Type type;
 
-    public AENew(AEType type) {
+    public AENew(Type type) {
         this.type = type;
     }
 
@@ -21,5 +22,11 @@ public class AENew extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "new " + this.type.toString();
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 }

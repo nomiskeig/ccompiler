@@ -4,6 +4,7 @@ import java.util.List;
 
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.feature.AEAttribute;
+import ccompiler.parser.typechecker.Type;
 
 public class AELet extends AEExpression {
     private List<AEAttribute> attributes;
@@ -46,6 +47,12 @@ public class AELet extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "let";
+    }
+
+    @Override
+    public Type getType() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getType'");
     }
 
 }

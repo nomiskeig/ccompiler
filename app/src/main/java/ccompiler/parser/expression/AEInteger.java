@@ -1,6 +1,7 @@
 package ccompiler.parser.expression;
 
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.typechecker.Type;
 
 public class AEInteger extends AEExpression {
     private String value;
@@ -25,6 +26,11 @@ public class AEInteger extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return this.value;
+    }
+
+    @Override
+    public Type getType() {
+        return new Type("Int");
     }
 
 }
