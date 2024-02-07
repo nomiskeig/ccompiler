@@ -41,7 +41,7 @@ import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
 
 /**
- * 
+ * asdfsdjfk
  */
 public class Parser {
     private Lexer lexer;
@@ -438,6 +438,7 @@ public class Parser {
     private LexerToken expect(LexerTokenType type) throws ParseException {
         LexerToken token = this.lexer.getNextToken();
         if (token.getType() != type) {
+            printBetterMessage(this.lexer.getSourceCode(), token.getRow(), token.getColumn());
             throw new ParseException(
                     "Expected type " + type.toString() + " but got " + token.getType().toString() + ".\nLine: "
                             + token.getRow() + " , Column: " + token.getColumn() + ".");
@@ -450,16 +451,43 @@ public class Parser {
     private LexerToken expect(Keyword keyword) throws ParseException {
         LexerToken token = this.lexer.getNextToken();
         if (token.getType() != LexerTokenType.KEYWORD) {
+            printBetterMessage(this.lexer.getSourceCode(), token.getRow(), token.getColumn());
             throw new ParseException(
                     "Expected keyword " + keyword.toString() + " but got tokenType " + token.getType() + ".\nLine: "
                             + token.getRow() + " , Column: " + token.getColumn() + ".");
         }
         if (token.getType() != LexerTokenType.KEYWORD || token.getKeyword() != keyword) {
+            printBetterMessage(this.lexer.getSourceCode(), token.getRow(), token.getColumn());
             throw new ParseException(
                     "Expected keyword " + keyword.toString() + " but got " + token.getKeyword().toString() + ".\nLine: "
                             + token.getRow() + " , Column: " + token.getColumn() + ".");
         }
         return token;
+
+    }
+
+    private void printBetterMessage(String code, int row, int column) {
+        String modifiedCode = "";
+        int currentRow = 1;
+        boolean added = false;
+        for (int i = 0; i < code.length(); i++) {
+            char c = code.charAt(i);
+            modifiedCode += c;
+            if (c == '\n') {
+                currentRow += 1;
+            }
+            if (!added && currentRow == row + 1) {
+                for (int j = 0; j < column - 1; j++) {
+                    modifiedCode += ' ';
+                }
+                modifiedCode += '^';
+                modifiedCode += '\n';
+                added = true;
+
+            }
+
+        }
+        System.out.println(modifiedCode);
 
     }
 

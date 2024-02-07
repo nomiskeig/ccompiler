@@ -27,6 +27,9 @@ public class Lexer {
 
     }
 
+    public String getSourceCode() {
+        return this.sourceCode;
+    }
     public LexerToken getNextToken() {
         if (this.nextToken != null) {
             LexerToken token = this.nextToken;
