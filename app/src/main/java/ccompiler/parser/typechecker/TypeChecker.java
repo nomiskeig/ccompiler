@@ -26,7 +26,7 @@ public class TypeChecker {
     public void validateClass(AEClass aeClass) throws TypeException {
         for (AEFeature feat : aeClass.getFeatures()) {
             if (feat instanceof AEAttribute) {
-                this.validateAttribut((AEAttribute) feat, aeClass.getType());
+                this.validateAttribute((AEAttribute) feat, aeClass.getType());
 
             }
 
@@ -34,13 +34,14 @@ public class TypeChecker {
 
     }
 
-    private void validateAttribut(AEAttribute attr, Type classType) throws TypeException {
+    private void validateAttribute(AEAttribute attr, Type classType) throws TypeException {
         Type xType = this.getObjectMapping(classType, attr.getIdentifier(), attr.getType());
         // TODO : getType should take the objectEnvironment and the methodEnvironment of
         // the class
+
+
         Type eType = attr.getType();
-        List<Type> superTypes = this.typeHierarchy.getSuperClasses(eType);
-        if (!superTypes.contains(xType)) {
+        if (!this.typeHierarchy.isSubClass(eType, xType)) {
             throw new TypeException("Cannot assign " + attr.getExpression().toString() + " to "
                     + attr.getIdentifier().toString() + " because " + attr.getIdentifier() + " is of type "
                     + xType.toString()

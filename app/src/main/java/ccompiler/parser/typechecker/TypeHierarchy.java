@@ -46,4 +46,29 @@ public class TypeHierarchy {
 
     }
 
+
+    /**
+     * Returns true if superClass is a superclass of the baseClass
+     * @param baseClass
+     * @param superClass
+     * @return
+     */
+    public boolean isSuperClass(Type baseClass, Type superClass) {
+        List<Type> superTypes = this.getSuperClasses(baseClass);
+        return superTypes.contains(superClass);
+
+    }
+
+    /**
+     * Returns true if subClass is a subclass of the baseClass
+     * @param subClass
+     * @param baseClass
+     * @return
+     */
+    public boolean isSubClass(Type subClass, Type baseClass)  {
+        List<Type> superTypes = this.getSuperClasses(subClass);
+        return superTypes.contains(baseClass);
+
+    }
+
 }
