@@ -92,7 +92,6 @@ class ParserTest {
 
                 };
                   """;
-        // TODO: This does not parse for some reason
         File file = new File("/home/simon/dev/ccompiler/graphs/trueFalse.dot");
         this.printProgram(programCode, file);
 
