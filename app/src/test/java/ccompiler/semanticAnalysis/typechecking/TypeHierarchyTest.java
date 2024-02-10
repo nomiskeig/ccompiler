@@ -1,6 +1,7 @@
-package ccompiler.parser.typechecker;
+package ccompiler.semanticAnalysis.typechecking;
 
 import org.junit.jupiter.api.Test;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 

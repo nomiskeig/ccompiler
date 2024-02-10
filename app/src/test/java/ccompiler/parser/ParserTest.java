@@ -2,13 +2,15 @@ package ccompiler.parser;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import ccompiler.CompilerException;
 import ccompiler.lexer.Lexer;
 
 import java.io.File;
 
 class ParserTest {
     @Test
-    void parsesProgram() throws ParseException {
+    void parsesProgram() throws CompilerException {
         String programCode = "class Int inherits Object {};class Other {};";
         File file = new File("/home/simon/dev/ccompiler/graphs/graph.dot");
         this.printProgram(programCode, file);
@@ -16,7 +18,7 @@ class ParserTest {
     }
 
     @Test
-    public void parsesBiggerProgramTest() throws ParseException {
+    public void parsesBiggerProgramTest() throws CompilerException {
         String programCode = """
                     class A {
                         local1: String <- 456;
@@ -34,7 +36,7 @@ class ParserTest {
     }
 
     @Test
-    void parsesMath() throws ParseException {
+    void parsesMath() throws CompilerException {
         String programCode = """
                 class Test {
                     fun(): Integer {
@@ -48,7 +50,7 @@ class ParserTest {
     }
 
     @Test
-    void parsesPlus() throws ParseException {
+    void parsesPlus() throws CompilerException {
         String programCode = """
                 class Test {
                     fun(): Integer {
@@ -61,7 +63,7 @@ class ParserTest {
     }
 
     @Test
-    void parsesLargerProgram() throws ParseException {
+    void parsesLargerProgram() throws CompilerException {
         String programCode = """
                     class Test1 {
                         fun1(): Type1 {
@@ -79,7 +81,7 @@ class ParserTest {
     }
 
     @Test
-    void parsesTrueAndFalse() throws ParseException {
+    void parsesTrueAndFalse() throws CompilerException {
         String programCode = """
                     class Test1 {
                         fun1() : Type1 {
@@ -97,7 +99,7 @@ class ParserTest {
 
     }
 
-    private void printProgram(String programCode, File file) throws ParseException {
+    private void printProgram(String programCode, File file) throws CompilerException {
         Lexer lexer = new Lexer(programCode);
         Parser parser = new Parser(lexer);
         AEProgram program = parser.parseProgram();
