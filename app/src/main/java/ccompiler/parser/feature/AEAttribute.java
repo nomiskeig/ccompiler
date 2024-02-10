@@ -21,9 +21,6 @@ public class AEAttribute extends AEFeature {
     @Override
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitAttribute(this);
-        if (this.expression != null) {
-            this.expression.acceptVisitor(visitor);
-        }
     }
 
     @Override

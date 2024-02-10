@@ -18,9 +18,6 @@ public class AEProgram implements AElement {
     @Override
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitProgram(this);
-        for (AEClass c : classes) {
-            c.acceptVisitor(visitor);
-        }
     }
 
 

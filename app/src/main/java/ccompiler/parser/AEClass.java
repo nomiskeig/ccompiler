@@ -20,9 +20,6 @@ public class AEClass implements AElement {
     @Override
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitClass(this);
-        for (AEFeature f : this.features) {
-            f.acceptVisitor(visitor);
-        }
     }
 
     @Override
