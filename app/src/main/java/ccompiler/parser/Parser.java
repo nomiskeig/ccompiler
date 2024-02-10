@@ -178,9 +178,11 @@ public class Parser {
                     return new AENot(this.parseExpression());
                 }
                 if (startToken.getKeyword() == Keyword.TRUE) {
+                    this.expect(Keyword.TRUE);
                     return new AETrue();
                 }
                 if (startToken.getKeyword() == Keyword.FALSE) {
+                    this.expect(Keyword.FALSE);
                     return new AEFalse();
                 }
             }

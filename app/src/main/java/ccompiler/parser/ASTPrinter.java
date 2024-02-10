@@ -5,12 +5,14 @@ import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEExpressionBlock;
+import ccompiler.parser.expression.AEFalse;
 import ccompiler.parser.expression.AEIfElse;
 import ccompiler.parser.expression.AEIsVoid;
 import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
@@ -243,6 +245,17 @@ public class ASTPrinter implements ASTVisitor {
         graph.addVertex(expr);
         graph.addEdge(isVoid, expr, new LabelEdge(""));
         
+    }
+
+    @Override
+    public void visitTrue(AETrue aeTrue) {
+        graph.addVertex(aeTrue);
+
+    }
+
+    @Override
+    public void visitFalse(AEFalse aeFalse) {
+        graph.addVertex(aeFalse);
     }
 
 }

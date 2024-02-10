@@ -7,20 +7,23 @@ public class AETrue extends AEExpression {
 
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+        visitor.visitTrue(this);
 	}
 
     @Override
     public String getGraphRepresentation() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+        return "True";
     }
 
     @Override
     public Type getType() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getType'");
+    }
+    @Override
+    public String toString() {
+        return "true";
+
     }
 
 

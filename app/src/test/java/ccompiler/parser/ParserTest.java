@@ -38,8 +38,7 @@ class ParserTest {
         String programCode = """
                 class Test {
                     fun(): Integer {
-                        123 + ((44/2) * 48)
-                    };
+                        123 + ((44/2) * 48) };
                 };
                 """;
 
@@ -77,6 +76,26 @@ class ParserTest {
                   """;
         File file = new File("/home/simon/dev/ccompiler/graphs/largeProgram.dot");
         this.printProgram(programCode, file);
+    }
+
+    @Test
+    void parsesTrueAndFalse() throws ParseException {
+        String programCode = """
+                    class Test1 {
+                        fun1() : Type1 {
+                        {
+                            5;
+                            true;
+                            false;
+                        }
+                        };
+
+                };
+                  """;
+        // TODO: This does not parse for some reason
+        File file = new File("/home/simon/dev/ccompiler/graphs/trueFalse.dot");
+        this.printProgram(programCode, file);
+
     }
 
     private void printProgram(String programCode, File file) throws ParseException {
