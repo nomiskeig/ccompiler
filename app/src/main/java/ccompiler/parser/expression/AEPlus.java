@@ -37,9 +37,4 @@ public class AEPlus extends AEExpression {
         return "+";
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 }

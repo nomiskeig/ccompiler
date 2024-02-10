@@ -4,7 +4,6 @@ import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
-import ccompiler.parser.expression.AEType;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEAttribute extends AEFeature {

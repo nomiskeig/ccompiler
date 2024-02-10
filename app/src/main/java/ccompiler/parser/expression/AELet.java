@@ -46,10 +46,5 @@ public class AELet extends AEExpression {
         return "let";
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

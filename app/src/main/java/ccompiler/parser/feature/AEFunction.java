@@ -7,7 +7,6 @@ import ccompiler.parser.AEFormal;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
-import ccompiler.parser.expression.AEType;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
 /**

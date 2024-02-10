@@ -6,6 +6,9 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEFalse extends AEExpression {
 
+    public AEFalse() {
+        this.type = new Type("Bool");
+    }
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitFalse(this);
@@ -16,11 +19,6 @@ public class AEFalse extends AEExpression {
         return "False";
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
     @Override
     public String toString() {

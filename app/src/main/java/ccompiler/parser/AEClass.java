@@ -3,16 +3,15 @@ package ccompiler.parser;
 import java.util.List;
 
 import ccompiler.CompilerException;
-import ccompiler.parser.expression.AEType;
 import ccompiler.parser.feature.AEFeature;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEClass implements AElement {
     Type classType;
-    AEType inheritType;
+    Type inheritType;
     List<AEFeature> features;
 
-    public AEClass(Type classType, AEType inheritType, List<AEFeature> features) {
+    public AEClass(Type classType, Type inheritType, List<AEFeature> features) {
         this.classType = classType;
         this.inheritType = inheritType;
         this.features = features;

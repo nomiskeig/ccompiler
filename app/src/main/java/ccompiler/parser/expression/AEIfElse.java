@@ -46,10 +46,5 @@ public class AEIfElse extends AEExpression {
         return "if else";
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

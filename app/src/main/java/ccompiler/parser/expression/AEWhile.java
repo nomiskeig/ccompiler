@@ -37,10 +37,5 @@ public class AEWhile extends AEExpression {
         return "while";
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

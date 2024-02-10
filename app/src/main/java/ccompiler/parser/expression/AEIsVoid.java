@@ -26,10 +26,5 @@ public  class AEIsVoid extends AEExpression {
     public String getGraphRepresentation() {
         return "isVoid";
     }
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

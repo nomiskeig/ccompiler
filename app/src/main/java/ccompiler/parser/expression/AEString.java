@@ -8,6 +8,7 @@ public class AEString extends AEExpression {
 
     public AEString(String value) {
         this.value = value;
+        this.type = new Type("String");
     }
 
     public String getValue() {

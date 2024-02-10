@@ -8,6 +8,7 @@ public class AEInteger extends AEExpression {
 
     public AEInteger(String value) {
         this.value = value;
+        this.type = new Type("Int");
     }
 
     public String getValue() {
@@ -28,9 +29,5 @@ public class AEInteger extends AEExpression {
         return this.value;
     }
 
-    @Override
-    public Type getType() {
-        return new Type("Int");
-    }
 
 }

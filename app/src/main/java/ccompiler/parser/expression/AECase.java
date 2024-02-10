@@ -26,10 +26,5 @@ public class AECase extends AEExpression {
         throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

@@ -1,7 +1,5 @@
 package ccompiler.semanticAnalysis.typechecking;
 
-import ccompiler.parser.AElement;
-import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.GraphElement;
 
 public class Type implements GraphElement{

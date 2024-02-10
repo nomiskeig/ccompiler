@@ -34,6 +34,26 @@ public class MethodEnvironment {
 
         }
 
+        public Map<AEIdentifier, List<Type>> getMethods() {
+            return this.methodMapping;
+        }
+
+        @Override
+        public String toString() {
+            String res = "";
+            for (Map.Entry<AEIdentifier, List<Type>> entry : this.methodMapping.entrySet()) {
+                res += "    " + entry.getKey().toString() + "(";
+                for (Type type : entry.getValue().subList(0, entry.getValue().size() - 1)) {
+                    res += type.toString() + ", ";
+                }
+                if (res.endsWith(", ")) {
+                    res = res.substring(0, res.length() - 2);
+                }
+                res += ") : " + entry.getValue().getLast().toString();
+            }
+            return res;
+        }
+
     }
 
     public void addMethod(Type classType, AEIdentifier methodName, List<Type> parameterTypes) throws CompilerException {
@@ -44,6 +64,21 @@ public class MethodEnvironment {
 
     }
 
-    
+
+    public Map<AEIdentifier, List<Type>> getMethods(Type classType) {
+        return this.classMapping.get(classType).getMethods();
+
+    }
+
+    @Override
+    public String toString() {
+        String res = "Methods:\n";
+        for (Map.Entry<Type, MethodMapping> entry : this.classMapping.entrySet()) {
+            res += "  class " + entry.getKey().toString() + "\n";
+            res += entry.getValue().toString();
+        }
+        return res;
+
+    }
 
 }

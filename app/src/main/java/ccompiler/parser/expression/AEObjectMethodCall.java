@@ -7,14 +7,14 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEObjectMethodCall extends AEExpression {
     private AEExpression startExpression;
-    private AEType atType;
+    private Type atType;
     private AEIdentifier identifier;
     private List<AEExpression> expressions;
 
-    public AEObjectMethodCall(AEExpression startExpression, AEType atType, AEIdentifier identifier,
+    public AEObjectMethodCall(AEExpression startExpression, Type type, AEIdentifier identifier,
             List<AEExpression> expressions) {
         this.startExpression = startExpression;
-        this.atType = atType;
+        this.type = type;
         this.identifier = identifier;
         this.expressions = expressions;
     }
@@ -31,10 +31,5 @@ public class AEObjectMethodCall extends AEExpression {
         throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 
 }

@@ -1,11 +1,12 @@
 package ccompiler.parser.expression;
 
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AECaseBranch {
 	private AEIdentifier identifier;
-    private AEType type;
+    private Type type;
     private AEExpression expression;
-    public AECaseBranch(AEIdentifier identifier, AEType type, AEExpression expression) {
+    public AECaseBranch(AEIdentifier identifier, Type type, AEExpression expression) {
         this.identifier = identifier;
         this.type = type;
         this.expression = expression;

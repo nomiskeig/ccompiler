@@ -15,7 +15,9 @@ public class TypeHierarchy {
         this.addType(new Type("Object"));
         this.addType(new Type("Int"), new Type("Object"));
         this.addType(new Type("String"), new Type("Object"));
+        this.addType(new Type("Bool"));
         this.addType(new Type("IO"), new Type("Object"));
+        this.addType(new Type("SELF_TYPE"));
 
     }
 

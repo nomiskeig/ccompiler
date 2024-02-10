@@ -26,7 +26,7 @@ import ccompiler.parser.feature.AEFeature;
 import ccompiler.parser.feature.AEFunction;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
-public class MethodAndObjectCollector implements ASTVisitor{
+public class MethodAndObjectCollector implements ASTVisitor {
     private MethodEnvironment methods;
     private ObjectEnvironment objects;
     private Type currentClass;
@@ -39,7 +39,7 @@ public class MethodAndObjectCollector implements ASTVisitor{
     }
 
     @Override
-    public void visitProgram(AEProgram program) throws CompilerException{
+    public void visitProgram(AEProgram program) throws CompilerException {
         for (AEClass aeClass : program.getClasses()) {
             this.currentClass = aeClass.getType();
             aeClass.acceptVisitor(this);
@@ -48,7 +48,7 @@ public class MethodAndObjectCollector implements ASTVisitor{
     }
 
     @Override
-    public void visitClass(AEClass c) throws CompilerException{
+    public void visitClass(AEClass c) throws CompilerException {
         for (AEFeature feature : c.getFeatures()) {
             feature.acceptVisitor(this);
         }
@@ -66,9 +66,8 @@ public class MethodAndObjectCollector implements ASTVisitor{
     }
 
     @Override
-    public void visitAttribute(AEAttribute attribute) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitAttribute'");
+    public void visitAttribute(AEAttribute attribute) throws CompilerException {
+        this.objects.addObject(this.currentClass, attribute.getIdentifier(), attribute.getType());
     }
 
     @Override

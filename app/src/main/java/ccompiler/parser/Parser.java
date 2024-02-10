@@ -34,7 +34,6 @@ import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AESmallerEquals;
 import ccompiler.parser.expression.AEString;
 import ccompiler.parser.expression.AETrue;
-import ccompiler.parser.expression.AEType;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEFunction;
 import ccompiler.semanticAnalysis.typechecking.Type;
@@ -71,11 +70,11 @@ public class Parser {
         LexerToken token = expect(LexerTokenType.TYPE);
         Type classType = new Type(token.getValue());
         token = this.lexer.peek();
-        AEType inheritType = null;
+        Type inheritType = null;
         if (token.getType() == LexerTokenType.KEYWORD && token.getKeyword() == Keyword.INHERITS) {
             this.lexer.getNextToken();
             token = expect(LexerTokenType.TYPE);
-            inheritType = new AEType(token.getValue());
+            inheritType = new Type(token.getValue());
         }
         expect(LexerTokenType.LEFT_CURLY_BRACKET);
         List<AEFeature> features = new ArrayList<>();
@@ -264,7 +263,7 @@ public class Parser {
         expect(LexerTokenType.RIGHT_ARROW);
         AEExpression expression = this.parseExpression();
         expect(LexerTokenType.SEMI_COLON);
-        return new AECaseBranch(new AEIdentifier(idToken.getValue()), new AEType(typeToken.getValue()), expression);
+        return new AECaseBranch(new AEIdentifier(idToken.getValue()), new Type(typeToken.getValue()), expression);
 
     }
 
@@ -411,10 +410,10 @@ public class Parser {
     }
 
     private AEExpression parseObjectMethodCall(AEExpression startExpression) throws CompilerException {
-        AEType type = null;
+        Type type = null;
         if (this.lexer.peek().getType() == LexerTokenType.AT) {
             expect(LexerTokenType.AT);
-            type = new AEType(expect(LexerTokenType.TYPE).getValue());
+            type = new Type(expect(LexerTokenType.TYPE).getValue());
         }
         expect(LexerTokenType.DOT);
         AEIdentifier identifier = new AEIdentifier(expect(LexerTokenType.ID).getValue());

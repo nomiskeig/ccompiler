@@ -3,23 +3,33 @@ package ccompiler.semanticAnalysis.typechecking;
 import org.junit.jupiter.api.Test;
 
 import ccompiler.CompilerException;
+import ccompiler.Utils;
 import ccompiler.lexer.Lexer;
 import ccompiler.parser.AEProgram;
 import ccompiler.parser.Parser;
 import ccompiler.parser.expression.AEInteger;
 import ccompiler.parser.expression.AEPlus;
 import ccompiler.parser.expression.AEString;
+import ccompiler.semanticAnalysis.MethodAndObjectCollector;
+import ccompiler.semanticAnalysis.MethodEnvironment;
+import ccompiler.semanticAnalysis.ObjectEnvironment;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
+
 class TypeCheckerTest {
-    @Test
-    void validatesPlus() throws CompilerException {
-        AEPlus plus = new AEPlus(new AEInteger("123"), new AEInteger("456"));
-        TypeChecker tc = new TypeChecker();
-        assertDoesNotThrow(() -> tc.validatePlus(plus));
-        AEPlus wrongPlus = new AEPlus(new AEInteger("124"), new AEString("ahdf"));
-        assertThrows(CompilerException.class, () -> tc.validatePlus(wrongPlus));
+    private MethodEnvironment methods;
+    private ObjectEnvironment objects;
+    private MethodAndObjectCollector collector;
+    private TypeChecker tc;
+
+    @BeforeEach
+    void beforeEach() {
+        this.methods = new MethodEnvironment();
+        this.objects = new ObjectEnvironment();
+        this.collector = new MethodAndObjectCollector(this.methods, this.objects);
+        this.tc = new TypeChecker(this.methods, this.objects);
     }
 
     @Test
@@ -29,11 +39,9 @@ class TypeCheckerTest {
                         local1: String <- "abc";
                     };
                 """;
-        Lexer lexer = new Lexer(programCode);
-        Parser parser = new Parser(lexer);
-        AEProgram program = parser.parseProgram();
-        TypeChecker tc = new TypeChecker();
-        tc.validateProgram(program);
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        program.acceptVisitor(this.tc);
     }
 
     @Test
@@ -41,32 +49,30 @@ class TypeCheckerTest {
         String programCode = """
                     class A {
                         local1: Int;
-                        local1: String <- "abc";
+                        local2: String <- 5;
                     };
                 """;
-        AEProgram program = this.createProgram(programCode);
-        TypeChecker tc = new TypeChecker();
-        assertThrows(CompilerException.class, (() -> tc.validateProgram(program)));
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        CompilerException ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
+        System.out.println(ex.getMessage());
     }
 
     @Test
     void checksWrongFunctionReturnType() throws CompilerException {
         String programCode = """
-                    class A {
-                        function(x: Int) : Int {
-                            true
-                        };
-                    };
-        """;
+                            class A {
+                                function(x: Int) : Int {
+                                    "asdf" 
+                                };
+                            };
+                """;
         AEProgram program = this.createProgram(programCode);
-        TypeChecker tc = new TypeChecker();
-        Exception ex = assertThrows(CompilerException.class, () -> tc.validateProgram(program));
+        program.acceptVisitor(this.collector);
+        Exception ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
         System.out.println(ex.getMessage());
 
-        
-
-    } 
-
+    }
 
     private AEProgram createProgram(String programCode) throws CompilerException {
         Lexer lexer = new Lexer(programCode);

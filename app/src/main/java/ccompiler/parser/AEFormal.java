@@ -2,7 +2,6 @@ package ccompiler.parser;
 
 import ccompiler.CompilerException;
 import ccompiler.parser.expression.AEIdentifier;
-import ccompiler.parser.expression.AEType;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEFormal implements AElement{
@@ -32,7 +31,12 @@ public class AEFormal implements AElement{
 
     @Override
     public Type getType() {
-        return this.getType();
+        return this.type;
     }
+
+    public AEIdentifier getIdentifier() {
+        return identifier;
+    }
+
 
 }

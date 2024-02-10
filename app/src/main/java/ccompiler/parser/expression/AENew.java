@@ -24,9 +24,4 @@ public class AENew extends AEExpression {
         return "new " + this.type.toString();
     }
 
-    @Override
-    public Type getType() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
-    }
 }
