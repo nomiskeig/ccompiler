@@ -2,9 +2,10 @@ package ccompiler.parser.expression;
 
 import java.util.List;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.feature.AEAttribute;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AELet extends AEExpression {
     private List<AEAttribute> attributes;
@@ -16,7 +17,7 @@ public class AELet extends AEExpression {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitLet(this);
     }
 

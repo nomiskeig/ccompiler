@@ -1,7 +1,8 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEEnclosedExpression extends AEExpression {
     private AEExpression expression;
@@ -15,7 +16,7 @@ public class AEEnclosedExpression extends AEExpression {
     }
 
 	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
+	public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitEnclosedExpression(this);
 	}
     @Override

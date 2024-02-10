@@ -2,12 +2,13 @@ package ccompiler.parser.feature;
 
 import java.util.List;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.AEFormal;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEType;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 /**
  * 
@@ -43,9 +44,8 @@ public class AEFunction extends AEFeature {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitFunction(this);
-        this.expression.acceptVisitor(visitor);
 
     }
 

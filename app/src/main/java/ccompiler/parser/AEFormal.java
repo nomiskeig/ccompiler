@@ -1,8 +1,9 @@
 package ccompiler.parser;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEType;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEFormal implements AElement{
     private AEIdentifier identifier;
@@ -15,7 +16,7 @@ public class AEFormal implements AElement{
 	}
 
 	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
+	public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitFormal(this);
 	}
 
@@ -31,7 +32,7 @@ public class AEFormal implements AElement{
 
     @Override
     public Type getType() {
-        throw new UnsupportedOperationException("Unimplemented method 'getType'");
+        return this.getType();
     }
 
 }

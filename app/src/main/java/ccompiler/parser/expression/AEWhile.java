@@ -1,7 +1,8 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEWhile extends AEExpression {
     private AEExpression condExpression;
@@ -21,7 +22,7 @@ public class AEWhile extends AEExpression {
         return condExpression;
     }
 
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitWhile(this);
 
     }

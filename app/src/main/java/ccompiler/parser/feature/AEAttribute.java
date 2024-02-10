@@ -1,10 +1,11 @@
 package ccompiler.parser.feature;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEType;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEAttribute extends AEFeature {
     private AEIdentifier identifier;
@@ -19,7 +20,7 @@ public class AEAttribute extends AEFeature {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitAttribute(this);
     }
 

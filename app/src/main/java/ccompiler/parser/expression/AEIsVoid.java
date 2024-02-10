@@ -1,7 +1,8 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public  class AEIsVoid extends AEExpression {
     private AEExpression expression;
@@ -12,7 +13,7 @@ public  class AEIsVoid extends AEExpression {
         return expression;
     }
     @Override
-	public void acceptVisitor(ASTVisitor visitor) {
+	public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitVoid(this);
 
 	}

@@ -1,7 +1,8 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEIfElse extends AEExpression {
     private AEExpression condExpression;
@@ -28,7 +29,7 @@ public class AEIfElse extends AEExpression {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitIfElse(this);
 
     }

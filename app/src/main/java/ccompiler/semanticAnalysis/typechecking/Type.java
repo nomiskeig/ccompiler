@@ -1,4 +1,4 @@
-package ccompiler.parser.typechecker;
+package ccompiler.semanticAnalysis.typechecking;
 
 import ccompiler.parser.AElement;
 import ccompiler.parser.ASTVisitor;

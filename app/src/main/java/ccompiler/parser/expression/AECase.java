@@ -3,7 +3,7 @@ package ccompiler.parser.expression;
 import java.util.List;
 
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AECase extends AEExpression {
     private AEExpression expression;

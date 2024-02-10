@@ -2,7 +2,8 @@ package ccompiler.parser;
 
 import java.util.List;
 
-import ccompiler.parser.typechecker.Type;
+import ccompiler.CompilerException;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEProgram implements AElement {
     private List<AEClass> classes;
@@ -16,7 +17,7 @@ public class AEProgram implements AElement {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitProgram(this);
     }
 

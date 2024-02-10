@@ -3,7 +3,7 @@ package ccompiler.parser.expression;
 import java.util.List;
 
 import ccompiler.parser.ASTVisitor;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEMethodCall extends AEExpression {
     private AEIdentifier identifier;

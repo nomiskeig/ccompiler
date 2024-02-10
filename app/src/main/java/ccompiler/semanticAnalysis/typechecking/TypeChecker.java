@@ -1,9 +1,10 @@
-package ccompiler.parser.typechecker;
+package ccompiler.semanticAnalysis.typechecking;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.AEClass;
 import ccompiler.parser.AEProgram;
 import ccompiler.parser.expression.AEExpression;
@@ -23,7 +24,7 @@ public class TypeChecker {
         this.typeHierarchy = new TypeHierarchy();
     }
 
-    public void validateClass(AEClass aeClass) throws TypeException {
+    public void validateClass(AEClass aeClass) throws CompilerException {
         for (AEFeature feat : aeClass.getFeatures()) {
             if (feat instanceof AEAttribute) {
                 this.validateAttribute((AEAttribute) feat, aeClass.getType());
@@ -34,7 +35,7 @@ public class TypeChecker {
 
     }
 
-    private void validateAttribute(AEAttribute attr, Type classType) throws TypeException {
+    private void validateAttribute(AEAttribute attr, Type classType) throws CompilerException {
         Type xType = this.getObjectMapping(classType, attr.getIdentifier(), attr.getType());
         // TODO : getType should take the objectEnvironment and the methodEnvironment of
         // the class
@@ -42,7 +43,7 @@ public class TypeChecker {
 
         Type eType = attr.getType();
         if (!this.typeHierarchy.isSubClass(eType, xType)) {
-            throw new TypeException("Cannot assign " + attr.getExpression().toString() + " to "
+            throw new CompilerException("Cannot assign " + attr.getExpression().toString() + " to "
                     + attr.getIdentifier().toString() + " because " + attr.getIdentifier() + " is of type "
                     + xType.toString()
                     + ", which is not compatible with type " + attr.getExpression().getType() + ".");
@@ -50,24 +51,24 @@ public class TypeChecker {
 
     }
 
-    public void validatePlus(AEPlus plus) throws TypeException {
+    public void validatePlus(AEPlus plus) throws CompilerException {
         if (!plus.getRightSide().getType().equals(new Type("Int"))) {
-            throw createTypeException(plus.getRightSide(), new Type("Int"));
+            throw createCompilerException(plus.getRightSide(), new Type("Int"));
         }
         if (!plus.getLeftSide().getType().equals(new Type("Int"))) {
-            throw createTypeException(plus.getLeftSide(), new Type("Int"));
+            throw createCompilerException(plus.getLeftSide(), new Type("Int"));
         }
 
     }
 
-    private TypeException createTypeException(AEExpression expression, Type shouldBe) {
-        return new TypeException(
+    private CompilerException createCompilerException(AEExpression expression, Type shouldBe) {
+        return new CompilerException(
                 "Expression " + expression.toString() + " is of type " + expression.getType().toString()
                         + " but should be of type " + shouldBe.toString());
 
     }
 
-    public void validateProgram(AEProgram program) throws TypeException {
+    public void validateProgram(AEProgram program) throws CompilerException {
         for (AEClass aeClass : program.getClasses()) {
             this.validateClass(aeClass);
         }

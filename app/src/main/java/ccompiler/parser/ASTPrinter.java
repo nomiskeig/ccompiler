@@ -1,5 +1,6 @@
 package ccompiler.parser;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
@@ -56,7 +57,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitProgram(AEProgram program) {
+    public void visitProgram(AEProgram program) throws CompilerException {
         graph.addVertex(program);
         for (AElement e : program.getClasses()) {
             graph.addVertex(e);
@@ -67,7 +68,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitClass(AEClass c) {
+    public void visitClass(AEClass c) throws CompilerException {
         graph.addVertex(c);
         for (AEFeature f : c.getFeatures()) {
             graph.addVertex(f);
@@ -77,7 +78,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitFunction(AEFunction function) {
+    public void visitFunction(AEFunction function) throws CompilerException {
         graph.addVertex(function);
         for (AEFormal formal : function.getFormals()) {
             graph.addVertex(formal);
@@ -92,7 +93,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitAttribute(AEAttribute attribute) {
+    public void visitAttribute(AEAttribute attribute) throws CompilerException {
         graph.addVertex(attribute);
         AEExpression expression = attribute.getExpression();
         if (expression != null) {
@@ -132,7 +133,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitIfElse(AEIfElse ifElse) {
+    public void visitIfElse(AEIfElse ifElse) throws CompilerException {
         graph.addVertex(ifElse);
         AEExpression cond = ifElse.getCondExpression();
         graph.addVertex(cond);
@@ -149,7 +150,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitEnclosedExpression(AEEnclosedExpression enclosedExpression) {
+    public void visitEnclosedExpression(AEEnclosedExpression enclosedExpression) throws CompilerException {
         graph.addVertex(enclosedExpression);
         AEExpression expression = enclosedExpression.getExpression();
         graph.addVertex(expression);
@@ -159,7 +160,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitPlus(AEPlus plus) {
+    public void visitPlus(AEPlus plus) throws CompilerException {
         graph.addVertex(plus);
         AEExpression leftSide = plus.getLeftSide();
         AEExpression rightSide = plus.getRightSide();
@@ -172,7 +173,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitMinus(AEMinus minus) {
+    public void visitMinus(AEMinus minus) throws CompilerException {
         graph.addVertex(minus);
         AEExpression leftSide = minus.getLeftSide();
         AEExpression rightSide = minus.getRightSide();
@@ -185,7 +186,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitMultiply(AEMultiply multiply) {
+    public void visitMultiply(AEMultiply multiply) throws CompilerException {
         graph.addVertex(multiply);
         AEExpression leftSide = multiply.getLeftSide();
         AEExpression rightSide = multiply.getRightSide();
@@ -198,7 +199,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitDivide(AEDivide divide) {
+    public void visitDivide(AEDivide divide) throws CompilerException {
         graph.addVertex(divide);
         AEExpression leftSide = divide.getLeftSide();
         AEExpression rightSide = divide.getRightSide();
@@ -211,7 +212,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitWhile(AEWhile whileE) {
+    public void visitWhile(AEWhile whileE) throws CompilerException {
         
         graph.addVertex(whileE);
         AEExpression cond = whileE.getCondExpression();
@@ -226,7 +227,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitExpressionBlock(AEExpressionBlock expressionBlock) {
+    public void visitExpressionBlock(AEExpressionBlock expressionBlock) throws CompilerException {
         graph.addVertex(expressionBlock);
         for (AEExpression expr : expressionBlock.getExpressions()) {
             graph.addVertex(expr);
@@ -237,7 +238,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitEquals(AEEquals equals) {
+    public void visitEquals(AEEquals equals) throws CompilerException {
         graph.addVertex(equals);
         AEExpression leftSide = equals.getLeftSide();
         AEExpression rightSide = equals.getRightSide();
@@ -250,7 +251,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitLet(AELet let) {
+    public void visitLet(AELet let) throws CompilerException {
         graph.addVertex(let);
         for (AEAttribute attr : let.getAttributes()) {
             graph.addVertex(attr);
@@ -264,7 +265,7 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
-    public void visitVoid(AEIsVoid isVoid) {
+    public void visitVoid(AEIsVoid isVoid) throws CompilerException {
         graph.addVertex(isVoid);
         AEExpression expr = isVoid.getExpression();
         graph.addVertex(expr);

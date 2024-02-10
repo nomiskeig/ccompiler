@@ -2,9 +2,10 @@ package ccompiler.parser;
 
 import java.util.List;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.expression.AEType;
 import ccompiler.parser.feature.AEFeature;
-import ccompiler.parser.typechecker.Type;
+import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEClass implements AElement {
     Type classType;
@@ -18,7 +19,7 @@ public class AEClass implements AElement {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
         visitor.visitClass(this);
     }
 
