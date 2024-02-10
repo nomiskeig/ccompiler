@@ -19,10 +19,6 @@ public class AEExpressionBlock extends AEExpression {
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitExpressionBlock(this);
-        for (AEExpression expr : this.expressions) {
-            expr.acceptVisitor(visitor);
-        }
-
 	}
 
     @Override

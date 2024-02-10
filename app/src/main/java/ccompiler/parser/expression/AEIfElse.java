@@ -30,9 +30,6 @@ public class AEIfElse extends AEExpression {
     @Override
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitIfElse(this);
-        this.condExpression.acceptVisitor(visitor);
-        this.thenExpression.acceptVisitor(visitor);
-        this.elseExpression.acceptVisitor(visitor);
 
     }
 

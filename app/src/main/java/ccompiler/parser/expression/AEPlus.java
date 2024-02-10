@@ -23,8 +23,6 @@ public class AEPlus extends AEExpression {
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitPlus(this);
-        this.leftSide.acceptVisitor(visitor);
-        this.rightSide.acceptVisitor(visitor);
 	}
 
 

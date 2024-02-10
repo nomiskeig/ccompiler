@@ -17,7 +17,6 @@ public class AEEnclosedExpression extends AEExpression {
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitEnclosedExpression(this);
-        this.expression.acceptVisitor(visitor);
 	}
     @Override
     public String toString() {

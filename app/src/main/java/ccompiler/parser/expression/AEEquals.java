@@ -23,8 +23,6 @@ public class AEEquals extends AEExpression {
     @Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitEquals(this);
-        this.leftSide.acceptVisitor(visitor);
-        this.rightSide.acceptVisitor(visitor);
 	}
 
 

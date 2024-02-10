@@ -23,8 +23,6 @@ public class AEDivide extends AEExpression {
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitDivide(this);
-        this.leftSide.acceptVisitor(visitor);
-        this.rightSide.acceptVisitor(visitor);
 	}
 
 

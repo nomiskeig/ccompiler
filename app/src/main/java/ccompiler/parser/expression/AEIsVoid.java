@@ -14,7 +14,6 @@ public  class AEIsVoid extends AEExpression {
     @Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitVoid(this);
-        this.expression.acceptVisitor(visitor);
 
 	}
 

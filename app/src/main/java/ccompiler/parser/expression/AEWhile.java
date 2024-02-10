@@ -23,8 +23,6 @@ public class AEWhile extends AEExpression {
 
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitWhile(this);
-        this.condExpression.acceptVisitor(visitor);
-        this.bodyExpression.acceptVisitor(visitor);
 
     }
 

@@ -18,10 +18,6 @@ public class AELet extends AEExpression {
     @Override
     public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitLet(this);
-        for (AEAttribute attr : this.attributes) {
-            attr.acceptVisitor(visitor);
-        }
-        this.expression.acceptVisitor(visitor);
     }
 
     public List<AEAttribute> getAttributes() {

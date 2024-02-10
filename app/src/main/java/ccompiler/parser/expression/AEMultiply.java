@@ -23,8 +23,6 @@ public class AEMultiply extends AEExpression {
 	@Override
 	public void acceptVisitor(ASTVisitor visitor) {
         visitor.visitMultiply(this);
-        this.leftSide.acceptVisitor(visitor);
-        this.rightSide.acceptVisitor(visitor);
 	}
 
 
