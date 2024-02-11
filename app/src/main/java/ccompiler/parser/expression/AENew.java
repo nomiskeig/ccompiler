@@ -1,5 +1,6 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
@@ -11,7 +12,8 @@ public class AENew extends AEExpression {
     }
 
 	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
+	public void acceptVisitor(ASTVisitor visitor) throws CompilerException {
+        visitor.visitNew(this);
 	}
 
     @Override
@@ -22,6 +24,10 @@ public class AENew extends AEExpression {
     @Override
     public String getGraphRepresentation() {
         return "new " + this.type.toString();
+    }
+
+    public Type getType() {
+        return type;
     }
 
 }

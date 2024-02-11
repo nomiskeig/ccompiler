@@ -8,32 +8,40 @@ import ccompiler.parser.AEClass;
 import ccompiler.parser.AEFormal;
 import ccompiler.parser.AEProgram;
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.expression.AEAssignment;
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
+import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEExpressionBlock;
 import ccompiler.parser.expression.AEFalse;
+import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEIfElse;
 import ccompiler.parser.expression.AEIsVoid;
 import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
+import ccompiler.parser.expression.AENew;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
 import ccompiler.parser.feature.AEFeature;
 import ccompiler.parser.feature.AEFunction;
 import ccompiler.semanticAnalysis.typechecking.Type;
+import ccompiler.semanticAnalysis.typechecking.TypeHierarchy;
 
 public class MethodAndObjectCollector implements ASTVisitor {
     private MethodEnvironment methods;
     private ObjectEnvironment objects;
+    private TypeHierarchy hierarchy;
     private Type currentClass;
 
-    public MethodAndObjectCollector(MethodEnvironment methods, ObjectEnvironment objects) {
+    public MethodAndObjectCollector(MethodEnvironment methods, ObjectEnvironment objects, TypeHierarchy hierarchy) {
         this.methods = methods;
         this.objects = objects;
+        this.hierarchy = hierarchy;
         this.currentClass = null;
 
     }
@@ -42,6 +50,13 @@ public class MethodAndObjectCollector implements ASTVisitor {
     public void visitProgram(AEProgram program) throws CompilerException {
         for (AEClass aeClass : program.getClasses()) {
             this.currentClass = aeClass.getType();
+            Type superType = aeClass.getInheritType();
+            if (superType == null) {
+                this.hierarchy.addType(this.currentClass);
+            } else {
+                this.hierarchy.addType(this.currentClass, superType);
+            }
+
             aeClass.acceptVisitor(this);
 
         }
@@ -89,9 +104,8 @@ public class MethodAndObjectCollector implements ASTVisitor {
     }
 
     @Override
-    public void visitPlus(AEPlus aePlus) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitPlus'");
+    public void visitPlus(AEPlus aePlus) throws CompilerException{
+
     }
 
     @Override
@@ -152,5 +166,30 @@ public class MethodAndObjectCollector implements ASTVisitor {
     public void visitFalse(AEFalse aeFalse) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visitFalse'");
+    }
+
+    @Override
+    public void visitAssignment(AEAssignment aeAssignment) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitAssignment'");
+    }
+
+
+    @Override
+    public void visitIdentifier(AEIdentifier aeIdentifier) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitIdentifier'");
+    }
+
+    @Override
+    public void visitSmaller(AESmaller aeSmaller) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitSmaller'");
+    }
+
+    @Override
+    public void visitNew(AENew aeNew) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitNew'");
     }
 }

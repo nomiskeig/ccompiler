@@ -53,4 +53,9 @@ public class AEClass implements AElement {
     public Type getType() {
         return this.classType;
     }
+
+
+    public Type getInheritType() {
+        return inheritType;
+    }
 }

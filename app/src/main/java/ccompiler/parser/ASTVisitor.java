@@ -1,17 +1,21 @@
 package ccompiler.parser;
 
 import ccompiler.CompilerException;
+import ccompiler.parser.expression.AEAssignment;
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
 import ccompiler.parser.expression.AEExpressionBlock;
 import ccompiler.parser.expression.AEFalse;
+import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEIfElse;
 import ccompiler.parser.expression.AEIsVoid;
 import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
+import ccompiler.parser.expression.AENew;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
@@ -53,5 +57,13 @@ public interface ASTVisitor {
     void visitTrue(AETrue aeTrue) throws CompilerException;
 
     void visitFalse(AEFalse aeFalse) throws CompilerException;
+
+    void visitAssignment(AEAssignment aeAssignment) throws CompilerException;
+
+    void visitIdentifier(AEIdentifier aeIdentifier) throws CompilerException;
+
+    void visitSmaller(AESmaller aeSmaller) throws CompilerException;
+
+    void visitNew(AENew aeNew) throws CompilerException;
 
 }

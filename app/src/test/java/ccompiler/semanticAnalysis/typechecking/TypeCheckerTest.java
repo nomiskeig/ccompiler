@@ -7,9 +7,6 @@ import ccompiler.Utils;
 import ccompiler.lexer.Lexer;
 import ccompiler.parser.AEProgram;
 import ccompiler.parser.Parser;
-import ccompiler.parser.expression.AEInteger;
-import ccompiler.parser.expression.AEPlus;
-import ccompiler.parser.expression.AEString;
 import ccompiler.semanticAnalysis.MethodAndObjectCollector;
 import ccompiler.semanticAnalysis.MethodEnvironment;
 import ccompiler.semanticAnalysis.ObjectEnvironment;
@@ -22,14 +19,16 @@ class TypeCheckerTest {
     private MethodEnvironment methods;
     private ObjectEnvironment objects;
     private MethodAndObjectCollector collector;
+    private TypeHierarchy hierarchy;
     private TypeChecker tc;
 
     @BeforeEach
     void beforeEach() {
         this.methods = new MethodEnvironment();
         this.objects = new ObjectEnvironment();
-        this.collector = new MethodAndObjectCollector(this.methods, this.objects);
-        this.tc = new TypeChecker(this.methods, this.objects);
+        this.hierarchy = new TypeHierarchy();
+        this.collector = new MethodAndObjectCollector(this.methods, this.objects, this.hierarchy);
+        this.tc = new TypeChecker(this.methods, this.objects, this.hierarchy);
     }
 
     @Test
@@ -63,22 +62,69 @@ class TypeCheckerTest {
         String programCode = """
                             class A {
                                 function(x: Int) : Int {
-                                    "asdf" 
+                                    "asdf"
                                 };
                             };
                 """;
-        AEProgram program = this.createProgram(programCode);
+        AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         Exception ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
         System.out.println(ex.getMessage());
 
     }
 
-    private AEProgram createProgram(String programCode) throws CompilerException {
-        Lexer lexer = new Lexer(programCode);
-        Parser parser = new Parser(lexer);
-        AEProgram program = parser.parseProgram();
-        return program;
+    @Test
+    void validatesExpressions() throws CompilerException {
+        String programCode = """
+                    class A {
+                       function(x: Int) : Int  {
+                            {
+                                x <- 4;
+                                if x < 4 then x <- 5 else x <- 3 fi;
+                            }
+                        };
+                    };
+
+                """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+    }
+
+    @Test
+    void validatesInheritanceIf() throws CompilerException {
+        String programCode = """
+                    class A {
+                };
+                class B inherits A {
+
+                };
+                class C inherits A {
+
+                };
+                class D {
+                    a: A;
+                    b: B;
+                    c: C;
+                    function1() : A {
+                        if 1 < 2 then b else c fi
+                };
+                    function2() : A {
+                        {
+                            a <- new B;
+                            b;
+
+        }
+        };
+
+                };
+
+
+                """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
 
     }
+
 }

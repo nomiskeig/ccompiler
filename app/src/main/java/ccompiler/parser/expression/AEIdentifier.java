@@ -1,5 +1,6 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
@@ -20,9 +21,8 @@ public class AEIdentifier extends AEExpression {
     }
 
     @Override
-    public void acceptVisitor(ASTVisitor visitor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+    public void acceptVisitor(ASTVisitor visitor) throws CompilerException{
+        visitor.visitIdentifier(this);
     }
 
     @Override

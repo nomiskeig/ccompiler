@@ -1,18 +1,22 @@
 package ccompiler.parser;
 
 import ccompiler.CompilerException;
+import ccompiler.parser.expression.AEAssignment;
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
 import ccompiler.parser.expression.AEExpression;
 import ccompiler.parser.expression.AEExpressionBlock;
 import ccompiler.parser.expression.AEFalse;
+import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.parser.expression.AEIfElse;
 import ccompiler.parser.expression.AEIsVoid;
 import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
+import ccompiler.parser.expression.AENew;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
@@ -283,6 +287,30 @@ public class ASTPrinter implements ASTVisitor {
     @Override
     public void visitFalse(AEFalse aeFalse) {
         graph.addVertex(aeFalse);
+    }
+
+    @Override
+    public void visitAssignment(AEAssignment aeAssignment) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitAssignment'");
+    }
+
+    @Override
+    public void visitIdentifier(AEIdentifier identifier) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitIdentifier'");
+    }
+
+    @Override
+    public void visitSmaller(AESmaller aeSmaller) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitSmaller'");
+    }
+
+    @Override
+    public void visitNew(AENew aeNew) throws CompilerException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'visitNew'");
     }
 
 }

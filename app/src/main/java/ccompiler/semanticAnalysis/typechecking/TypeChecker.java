@@ -8,7 +8,9 @@ import ccompiler.CompilerException;
 import ccompiler.parser.AEClass;
 import ccompiler.parser.AEFormal;
 import ccompiler.parser.AEProgram;
+import ccompiler.parser.AElement;
 import ccompiler.parser.ASTVisitor;
+import ccompiler.parser.expression.AEAssignment;
 import ccompiler.parser.expression.AEDivide;
 import ccompiler.parser.expression.AEEnclosedExpression;
 import ccompiler.parser.expression.AEEquals;
@@ -21,7 +23,9 @@ import ccompiler.parser.expression.AEIsVoid;
 import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
+import ccompiler.parser.expression.AENew;
 import ccompiler.parser.expression.AEPlus;
+import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
 import ccompiler.parser.expression.AEWhile;
 import ccompiler.parser.feature.AEAttribute;
@@ -36,10 +40,10 @@ public class TypeChecker implements ASTVisitor {
     private TypeHierarchy typeHierarchy;
     private Type currentClass;
 
-    public TypeChecker(MethodEnvironment methods, ObjectEnvironment objects) {
+    public TypeChecker(MethodEnvironment methods, ObjectEnvironment objects, TypeHierarchy hierarchy) {
         this.methods = methods;
         this.objects = objects;
-        this.typeHierarchy = new TypeHierarchy();
+        this.typeHierarchy = hierarchy;
         this.currentClass = null;
     }
 
@@ -81,7 +85,6 @@ public class TypeChecker implements ASTVisitor {
         }
     }
 
-
     @Override
     public void visitAttribute(AEAttribute attribute) throws CompilerException {
         AEExpression expr = attribute.getExpression();
@@ -104,9 +107,19 @@ public class TypeChecker implements ASTVisitor {
     }
 
     @Override
-    public void visitIfElse(AEIfElse aeIfElse) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitIfElse'");
+    public void visitIfElse(AEIfElse ifElse) throws CompilerException {
+        AEExpression condExpr = ifElse.getCondExpression(); 
+        AEExpression thenExpr = ifElse.getThenExpression();
+        AEExpression elseExpr = ifElse.getElseExpression();
+        condExpr.acceptVisitor(this);
+        if (!condExpr.getType().equals(new Type("Bool"))) {
+            throw this.createCompilerException(condExpr, new Type("Bool"));
+        }
+        thenExpr.acceptVisitor(this);
+        elseExpr.acceptVisitor(this);
+        Type thenType = thenExpr.getType();
+        Type elseType = elseExpr.getType();
+        ifElse.setType(this.typeHierarchy.getCommonSuperclass(thenType, elseType));
     }
 
     @Override
@@ -117,26 +130,70 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitPlus(AEPlus aePlus) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitPlus'");
+        AEExpression leftSide = aePlus.getLeftSide();
+        AEExpression rightSide = aePlus.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!leftType.equals(new Type("Int"))) {
+            throw this.createCompilerException(leftSide, new Type("Int"));
+        }
+        if (!rightType.equals(new Type("Int"))) {
+            throw this.createCompilerException(rightSide, new Type("Int"));
+        }
+        aePlus.setType(new Type("Int"));
     }
 
     @Override
     public void visitMinus(AEMinus aeMinus) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitMinus'");
+        AEExpression leftSide = aeMinus.getLeftSide();
+        AEExpression rightSide = aeMinus.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!leftType.equals(new Type("Int"))) {
+            throw this.createCompilerException(leftSide, new Type("Int"));
+        }
+        if (!rightType.equals(new Type("Int"))) {
+            throw this.createCompilerException(rightSide, new Type("Int"));
+        }
+        aeMinus.setType(new Type("Int"));
     }
 
     @Override
     public void visitMultiply(AEMultiply aeMultiply) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitMultiply'");
+        AEExpression leftSide = aeMultiply.getLeftSide();
+        AEExpression rightSide = aeMultiply.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!leftType.equals(new Type("Int"))) {
+            throw this.createCompilerException(leftSide, new Type("Int"));
+        }
+        if (!rightType.equals(new Type("Int"))) {
+            throw this.createCompilerException(rightSide, new Type("Int"));
+        }
+        aeMultiply.setType(new Type("Int"));
     }
 
     @Override
     public void visitDivide(AEDivide aeDivide) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitDivide'");
+        AEExpression leftSide = aeDivide.getLeftSide();
+        AEExpression rightSide = aeDivide.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!leftType.equals(new Type("Int"))) {
+            throw this.createCompilerException(leftSide, new Type("Int"));
+        }
+        if (!rightType.equals(new Type("Int"))) {
+            throw this.createCompilerException(rightSide, new Type("Int"));
+        }
+        aeDivide.setType(new Type("Int"));
     }
 
     @Override
@@ -147,8 +204,11 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitExpressionBlock(AEExpressionBlock aeExpressionBlock) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitExpressionBlock'");
+        for (AEExpression expr : aeExpressionBlock.getExpressions()) {
+            expr.acceptVisitor(this);
+        }
+        aeExpressionBlock.setType(aeExpressionBlock.getExpressions().getLast().getType());
+
     }
 
     @Override
@@ -177,6 +237,50 @@ public class TypeChecker implements ASTVisitor {
     public void visitFalse(AEFalse aeFalse) throws CompilerException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visitFalse'");
+    }
+
+    @Override
+    public void visitAssignment(AEAssignment aeAssignment) throws CompilerException {
+        Type varType = this.objects.getObjects(this.currentClass).get(aeAssignment.getIdentifier());
+        aeAssignment.getExpression().acceptVisitor(this);
+        Type exprType = aeAssignment.getExpression().getType();
+        if (!this.typeHierarchy.isSubClass(exprType, varType)) {
+            throw this.createCompilerException(aeAssignment.getExpression(), varType);
+        }
+        aeAssignment.setType(exprType);
+
+    }
+    @Override
+    public void visitIdentifier(AEIdentifier identifier) throws CompilerException {
+        Type type = this.objects.getObjects(this.currentClass).get(identifier);
+        if (type == null) {
+            throw new CompilerException("Attribute " + identifier + " is not defined");
+        }
+
+        identifier.setType(type);
+
+    }
+
+    @Override
+    public void visitSmaller(AESmaller aeSmaller) throws CompilerException {
+        AEExpression leftSide = aeSmaller.getLeftSide();
+        AEExpression rightSide = aeSmaller.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!leftType.equals(new Type("Int"))) {
+            throw this.createCompilerException(leftSide, new Type("Int"));
+        }
+        if (!rightType.equals(new Type("Int"))) {
+            throw this.createCompilerException(rightSide, new Type("Int"));
+        }
+        aeSmaller.setType(new Type("Bool"));
+    }
+
+    @Override
+    public void visitNew(AENew aeNew) throws CompilerException {
+
     }
 
 }

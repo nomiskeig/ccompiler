@@ -35,7 +35,7 @@ public class ObjectEnvironment {
                         "Object " + objectName + " in class " + this.className + " is defined multiple times");
             }
             this.objectMapping.put(objectName, objectType);
-            this.isSubstitution.put(objectName, true);
+            this.isSubstitution.put(objectName, isSubstitution);
 
         }
 
@@ -46,7 +46,7 @@ public class ObjectEnvironment {
         public void clearSubstitutions() {
             List<AEIdentifier> toRemove = new ArrayList<>();
             for (AEIdentifier identifier : this.objectMapping.keySet()) {
-                if (this.isSubstitution.get(identifier)) {
+                if (this.isSubstitution.get(identifier) == true) {
                     toRemove.add(identifier);
                 }
             }
@@ -62,7 +62,7 @@ public class ObjectEnvironment {
         public String toString() {
             String res = "";
             for (Map.Entry<AEIdentifier, Type> entry : this.objectMapping.entrySet()) {
-                res += "    " + entry.getKey().toString() + " : " + entry.getValue().toString();
+                res += "    " + entry.getKey().toString() + " : " + entry.getValue().toString() + "\n";
             }
             return res;
         }
@@ -99,7 +99,7 @@ public class ObjectEnvironment {
 
     @Override
     public String toString() {
-        String res = "Methods:\n";
+        String res = "Objects:\n";
         for (Map.Entry<Type, ObjectMapping> entry : this.classMapping.entrySet()) {
             res += "  class " + entry.getKey().toString() + "\n";
             res += entry.getValue().toString();

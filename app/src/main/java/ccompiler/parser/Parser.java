@@ -137,6 +137,9 @@ public class Parser {
 
     private AEExpression parseExpression() throws CompilerException {
         LexerToken startToken = this.lexer.peek();
+        if (startToken.getType() == LexerTokenType.TYPE) {
+            throw new CompilerException(startToken.getValue() + " can not be an expression");
+        }
         switch (startToken.getType()) {
             case KEYWORD: {
                 if (startToken.getKeyword() == Keyword.IF) {
@@ -401,10 +404,17 @@ public class Parser {
                 return new AEEquals(startExpression, this.parseExpression());
 
             }
+            case ASSIGNMENT: {
+                expect(LexerTokenType.ASSIGNMENT);
+                return new AEAssignment((AEIdentifier) startExpression, this.parseExpression());
+            }
+            // TODO: Function calls are not parsed correctly
 
             default:
+                
+                this.printBetterMessage(this.lexer.getSourceCode(), decisionToken.getRow(), decisionToken.getColumn());
                 throw new CompilerException("Error parsing expression at line  " + decisionToken.getRow() + ", column "
-                        + decisionToken.getColumn());
+                        + decisionToken.getColumn() +", got " + decisionToken.getType());
         }
 
     }

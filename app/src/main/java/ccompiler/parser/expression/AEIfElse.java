@@ -37,7 +37,7 @@ public class AEIfElse extends AEExpression {
     @Override
     public String toString() {
         return "if " + this.condExpression.toString() + " then " + this.thenExpression.toString() + " else "
-                + this.elseExpression + "fi";
+                + this.elseExpression + " fi";
 
     }
 

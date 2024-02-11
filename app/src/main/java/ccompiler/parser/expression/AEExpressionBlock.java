@@ -4,7 +4,6 @@ import java.util.List;
 
 import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AEExpressionBlock extends AEExpression {
     private List<AEExpression> expressions;

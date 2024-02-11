@@ -8,6 +8,8 @@ import ccompiler.Utils;
 import ccompiler.parser.AEProgram;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.semanticAnalysis.typechecking.Type;
+import ccompiler.semanticAnalysis.typechecking.TypeHierarchy;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
@@ -17,12 +19,14 @@ class MethodAndJobjectCollectorTest {
     private MethodEnvironment methods;
     private ObjectEnvironment objects;
     private MethodAndObjectCollector collector;
+    private TypeHierarchy hierarchy;
 
     @BeforeEach
     void beforeEach() {
         this.methods = new MethodEnvironment();
         this.objects = new ObjectEnvironment();
-        this.collector = new MethodAndObjectCollector(this.methods, this.objects);
+        this.hierarchy  =new TypeHierarchy();
+        this.collector = new MethodAndObjectCollector(this.methods, this.objects, this.hierarchy);
     }
 
     @Test

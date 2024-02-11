@@ -1,7 +1,7 @@
 package ccompiler.parser.expression;
 
+import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AESmaller extends AEExpression {
     private AEExpression leftSide;
@@ -13,15 +13,27 @@ public class AESmaller extends AEExpression {
     }
 
 	@Override
-	public void acceptVisitor(ASTVisitor visitor) {
-		// TODO Auto-generated method stub
-		throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+	public void acceptVisitor(ASTVisitor visitor) throws CompilerException{
+        visitor.visitSmaller(this);
 	}
 
     @Override
     public String getGraphRepresentation() {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getGraphRepresentation'");
+    }
+
+    public AEExpression getLeftSide() {
+        return leftSide;
+    }
+
+    public AEExpression getRightSide() {
+        return rightSide;
+    }
+
+    @Override
+    public String toString() {
+        return this.leftSide.toString() + " < " + this.rightSide.toString();
     }
 
 }
