@@ -1,5 +1,7 @@
 package ccompiler.lexer;
 
+import ccompiler.ExceptionHandler;
+
 public class Lexer {
     private String sourceCode;
     private int currentCharIndex;
@@ -13,6 +15,7 @@ public class Lexer {
         this.currentLine = 1;
         this.currentColumn = 1;
         this.nextToken = null;
+        ExceptionHandler.setSourceCode(this.sourceCode);
     }
 
     public boolean hasMoreTokens() {

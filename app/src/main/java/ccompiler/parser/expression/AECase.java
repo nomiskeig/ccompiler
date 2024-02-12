@@ -9,9 +9,11 @@ public class AECase extends AEExpression {
     private AEExpression expression;
     private List<AECaseBranch> branches;
 
-    public AECase(AEExpression expression, List<AECaseBranch> branches) {
+    public AECase(AEExpression expression, List<AECaseBranch> branches, int row, int column) {
         this.expression = expression;
         this.branches = branches;
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

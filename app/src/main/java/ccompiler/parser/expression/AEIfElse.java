@@ -9,11 +9,13 @@ public class AEIfElse extends AEExpression {
     private AEExpression thenExpression;
     private AEExpression elseExpression;
 
-    public AEIfElse(AEExpression condExpression, AEExpression thenExpression, AEExpression elseExpression) {
+    public AEIfElse(AEExpression condExpression, AEExpression thenExpression, AEExpression elseExpression, int row, int column) {
         this.condExpression = condExpression;
         this.thenExpression = thenExpression;
         this.elseExpression = elseExpression;
 
+        this.row = row;
+        this.column = column;
     }
 
     public AEExpression getCondExpression() {

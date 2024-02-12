@@ -8,10 +8,11 @@ public class AEWhile extends AEExpression {
     private AEExpression condExpression;
     private AEExpression bodyExpression;
 
-    public AEWhile(AEExpression condExpression,  AEExpression bodyExpression) {
+    public AEWhile(AEExpression condExpression,  AEExpression bodyExpression, int row, int column) {
         this.condExpression = condExpression;
         this.bodyExpression = bodyExpression;
-
+        this.row = row;
+        this.column = column;
     }
 
     public AEExpression getBodyExpression() {

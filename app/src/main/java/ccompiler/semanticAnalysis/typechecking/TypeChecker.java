@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import ccompiler.CompilerException;
+import ccompiler.ExceptionHandler;
 import ccompiler.parser.AEClass;
 import ccompiler.parser.AEFormal;
 import ccompiler.parser.AEProgram;
@@ -75,7 +76,7 @@ public class TypeChecker implements ASTVisitor {
         for (AEFormal formal : function.getFormals()) {
             this.objects.addSubstitution(this.currentClass, formal.getIdentifier(), formal.getType());
         }
-        this.objects.addSubstitution(this.currentClass, new AEIdentifier("self"), new Type("SELF_TYPE"));
+        this.objects.addSubstitution(this.currentClass, new AEIdentifier("self", 0, 0), new Type("SELF_TYPE"));
         expr.acceptVisitor(this);
         this.objects.clearSubstitutions(this.currentClass);
         Type exprType = expr.getType();
@@ -91,12 +92,13 @@ public class TypeChecker implements ASTVisitor {
         if (expr == null) {
             return;
         }
-        this.objects.addSubstitution(this.currentClass, new AEIdentifier("self"), new Type("SELF_TYPE"));
+        this.objects.addSubstitution(this.currentClass, new AEIdentifier("self", 0, 0), new Type("SELF_TYPE"));
         expr.acceptVisitor(this);
         this.objects.clearSubstitutions(this.currentClass);
         Type exprType = expr.getType();
         if (!this.typeHierarchy.isSubClass(exprType, attribute.getType())) {
-            throw this.createCompilerException(expr, attribute.getType());
+            ExceptionHandler.throwWrongTypeError(expr, attribute.getType(), attribute.getRow(), attribute.getColumn());
+            
         }
     }
 
@@ -108,7 +110,7 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitIfElse(AEIfElse ifElse) throws CompilerException {
-        AEExpression condExpr = ifElse.getCondExpression(); 
+        AEExpression condExpr = ifElse.getCondExpression();
         AEExpression thenExpr = ifElse.getThenExpression();
         AEExpression elseExpr = ifElse.getElseExpression();
         condExpr.acceptVisitor(this);
@@ -171,10 +173,12 @@ public class TypeChecker implements ASTVisitor {
         Type leftType = leftSide.getType();
         Type rightType = rightSide.getType();
         if (!leftType.equals(new Type("Int"))) {
-            throw this.createCompilerException(leftSide, new Type("Int"));
+            ExceptionHandler.throwWrongTypeError(leftSide, new Type("Int"), leftSide.getRow(),
+                    leftSide.getColumn());
         }
         if (!rightType.equals(new Type("Int"))) {
-            throw this.createCompilerException(rightSide, new Type("Int"));
+            ExceptionHandler.throwWrongTypeError(rightSide, new Type("Int"), rightSide.getRow(),
+                    rightSide.getColumn());
         }
         aeMultiply.setType(new Type("Int"));
     }
@@ -245,11 +249,13 @@ public class TypeChecker implements ASTVisitor {
         aeAssignment.getExpression().acceptVisitor(this);
         Type exprType = aeAssignment.getExpression().getType();
         if (!this.typeHierarchy.isSubClass(exprType, varType)) {
-            throw this.createCompilerException(aeAssignment.getExpression(), varType);
+            ExceptionHandler.throwWrongTypeError(aeAssignment.getExpression(), varType, aeAssignment.getRow(),
+                    aeAssignment.getColumn());
         }
         aeAssignment.setType(exprType);
 
     }
+
     @Override
     public void visitIdentifier(AEIdentifier identifier) throws CompilerException {
         Type type = this.objects.getObjects(this.currentClass).get(identifier);

@@ -12,11 +12,13 @@ public class AEObjectMethodCall extends AEExpression {
     private List<AEExpression> expressions;
 
     public AEObjectMethodCall(AEExpression startExpression, Type type, AEIdentifier identifier,
-            List<AEExpression> expressions) {
+            List<AEExpression> expressions, int row, int column) {
         this.startExpression = startExpression;
         this.type = type;
         this.identifier = identifier;
         this.expressions = expressions;
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

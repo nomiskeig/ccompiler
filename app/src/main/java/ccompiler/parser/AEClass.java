@@ -6,12 +6,12 @@ import ccompiler.CompilerException;
 import ccompiler.parser.feature.AEFeature;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
-public class AEClass implements AElement {
+public class AEClass extends AElement {
     Type classType;
     Type inheritType;
     List<AEFeature> features;
 
-    public AEClass(Type classType, Type inheritType, List<AEFeature> features) {
+    public AEClass(Type classType, Type inheritType, List<AEFeature> features, int row, int column) {
         this.classType = classType;
         this.inheritType = inheritType;
         this.features = features;

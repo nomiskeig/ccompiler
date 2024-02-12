@@ -12,8 +12,10 @@ public class AEExpressionBlock extends AEExpression {
         return expressions;
     }
 
-    public AEExpressionBlock(List<AEExpression> expressions) {
+    public AEExpressionBlock(List<AEExpression> expressions, int row, int column) {
         this.expressions = expressions;
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

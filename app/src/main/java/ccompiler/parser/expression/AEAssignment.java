@@ -7,9 +7,11 @@ public class AEAssignment extends AEExpression {
     private AEIdentifier identifier;
     private AEExpression expression;
 
-    public AEAssignment(AEIdentifier id, AEExpression expression) {
+    public AEAssignment(AEIdentifier id, AEExpression expression, int row, int column) {
         this.identifier = id;
         this.expression = expression;
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

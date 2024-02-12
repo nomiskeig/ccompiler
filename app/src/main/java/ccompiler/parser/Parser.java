@@ -48,6 +48,7 @@ public class Parser {
 
     public Parser(Lexer lexer) {
         this.lexer = lexer;
+
     }
 
     public AEProgram parseInput() throws CompilerException {
@@ -61,7 +62,7 @@ public class Parser {
             classes.add(this.parseClass());
             expect(LexerTokenType.SEMI_COLON);
         }
-        return new AEProgram(classes);
+        return new AEProgram(classes, 0,0);
 
     }
 
@@ -85,7 +86,7 @@ public class Parser {
             expect(LexerTokenType.SEMI_COLON);
         }
         expect(LexerTokenType.RIGHT_CURLY_BRACKET);
-        return new AEClass(classType, inheritType, features);
+        return new AEClass(classType, inheritType, features, token.getRow(), token.getColumn());
 
     }
 
@@ -119,8 +120,9 @@ public class Parser {
         expect(LexerTokenType.LEFT_CURLY_BRACKET);
         AEExpression expression = this.parseExpression();
         expect(LexerTokenType.RIGHT_CURLY_BRACKET);
-        return new AEFunction(new AEIdentifier(IDToken.getValue()), formals, new Type(typeToken.getValue()),
-                expression);
+        return new AEFunction(new AEIdentifier(IDToken.getValue(), IDToken.getRow(), IDToken.getColumn()), formals,
+                new Type(typeToken.getValue()),
+                expression, IDToken.getRow(), IDToken.getColumn());
 
     }
 
@@ -131,7 +133,9 @@ public class Parser {
             expect(LexerTokenType.ASSIGNMENT);
             expression = this.parseExpression();
         }
-        return new AEAttribute(new AEIdentifier(IDToken.getValue()), new Type(typeToken.getValue()), expression);
+        return new AEAttribute(new AEIdentifier(IDToken.getValue(), IDToken.getRow(), IDToken.getColumn()),
+                new Type(typeToken.getValue()), expression,
+                IDToken.getRow(), IDToken.getColumn());
 
     }
 
@@ -150,7 +154,8 @@ public class Parser {
                     expect(Keyword.ELSE);
                     AEExpression elseExpression = this.parseExpression();
                     expect(Keyword.FI);
-                    return new AEIfElse(condExpression, thenExpression, elseExpression);
+                    return new AEIfElse(condExpression, thenExpression, elseExpression, startToken.getRow(),
+                            startToken.getRow());
                 }
                 if (startToken.getKeyword() == Keyword.WHILE) {
                     expect(Keyword.WHILE);
@@ -158,7 +163,7 @@ public class Parser {
                     expect(Keyword.LOOP);
                     AEExpression bodyExpression = this.parseExpression();
                     expect(Keyword.POOL);
-                    return new AEWhile(condExpression, bodyExpression);
+                    return new AEWhile(condExpression, bodyExpression, startToken.getRow(), startToken.getColumn());
                 }
                 if (startToken.getKeyword() == Keyword.LET) {
                     return this.parseLet();
@@ -170,51 +175,54 @@ public class Parser {
                 if (startToken.getKeyword() == Keyword.NEW) {
                     this.expect(Keyword.NEW);
                     LexerToken type = expect(LexerTokenType.TYPE);
-                    return new AENew(new Type(type.getValue()));
+                    return new AENew(new Type(type.getValue()), startToken.getRow(), startToken.getColumn());
                 }
                 if (startToken.getKeyword() == Keyword.ISVOID) {
                     this.expect(Keyword.ISVOID);
-                    return new AEIsVoid(this.parseExpression());
+                    return new AEIsVoid(this.parseExpression(), startToken.getRow(), startToken.getColumn());
                 }
                 if (startToken.getKeyword() == Keyword.NOT) {
                     this.expect(Keyword.NOT);
-                    return new AENot(this.parseExpression());
+                    return new AENot(this.parseExpression(), startToken.getRow(), startToken.getColumn());
                 }
                 if (startToken.getKeyword() == Keyword.TRUE) {
                     this.expect(Keyword.TRUE);
-                    return new AETrue();
+                    return new AETrue(startToken.getRow(), startToken.getColumn());
                 }
                 if (startToken.getKeyword() == Keyword.FALSE) {
                     this.expect(Keyword.FALSE);
-                    return new AEFalse();
+                    return new AEFalse(startToken.getRow(), startToken.getColumn());
                 }
             }
 
             case STRING: {
                 this.lexer.getNextToken();
                 if (!this.canFollowExpr(this.lexer.peek())) {
-                    return new AEString(startToken.getValue());
+                    return new AEString(startToken.getValue(), startToken.getRow(), startToken.getColumn());
                 }
-                return this.parseRecursiveExpression(new AEString(startToken.getValue()));
+                return this.parseRecursiveExpression(
+                        new AEString(startToken.getValue(), startToken.getRow(), startToken.getColumn()));
             }
             case INTEGER: {
                 this.lexer.getNextToken();
                 if (!this.canFollowExpr(this.lexer.peek())) {
-                    return new AEInteger(startToken.getValue());
+                    return new AEInteger(startToken.getValue(), startToken.getRow(), startToken.getColumn());
                 }
-                return this.parseRecursiveExpression(new AEInteger(startToken.getValue()));
+                return this.parseRecursiveExpression(
+                        new AEInteger(startToken.getValue(), startToken.getRow(), startToken.getColumn()));
 
             }
             case ID: {
                 this.lexer.getNextToken();
                 if (!this.canFollowExpr(this.lexer.peek())) {
-                    return new AEIdentifier(startToken.getValue());
+                    return new AEIdentifier(startToken.getValue(), startToken.getRow(), startToken.getColumn());
                 }
-                return this.parseRecursiveExpression(new AEIdentifier(startToken.getValue()));
+                return this.parseRecursiveExpression(
+                        new AEIdentifier(startToken.getValue(), startToken.getRow(), startToken.getColumn()));
             }
             case TILDE: {
                 this.lexer.getNextToken();
-                return new AEInversion(this.parseExpression());
+                return new AEInversion(this.parseExpression(), startToken.getRow(), startToken.getColumn());
             }
             case LEFT_PARANTHESIS: {
                 this.lexer.getNextToken();
@@ -224,7 +232,7 @@ public class Parser {
 
                 }
                 expect(LexerTokenType.RIGHT_PARANTHESIS);
-                return new AEEnclosedExpression(expression);
+                return new AEEnclosedExpression(expression, startToken.getRow(), startToken.getColumn());
 
             }
             case LEFT_CURLY_BRACKET: {
@@ -246,7 +254,7 @@ public class Parser {
     }
 
     private AECase parseCase() throws CompilerException {
-        expect(Keyword.CASE);
+        LexerToken caseToken = expect(Keyword.CASE);
         AEExpression expression = this.parseExpression();
         expect(Keyword.OF);
         List<AECaseBranch> branches = new ArrayList<>();
@@ -255,7 +263,7 @@ public class Parser {
             branches.add(this.parseCaseBranch());
         }
         expect(Keyword.ESAC);
-        return new AECase(expression, branches);
+        return new AECase(expression, branches, caseToken.getRow(), caseToken.getColumn());
 
     }
 
@@ -266,12 +274,13 @@ public class Parser {
         expect(LexerTokenType.RIGHT_ARROW);
         AEExpression expression = this.parseExpression();
         expect(LexerTokenType.SEMI_COLON);
-        return new AECaseBranch(new AEIdentifier(idToken.getValue()), new Type(typeToken.getValue()), expression);
+        return new AECaseBranch(new AEIdentifier(idToken.getValue(), idToken.getRow(), idToken.getColumn()),
+                new Type(typeToken.getValue()), expression, idToken.getRow(), idToken.getColumn());
 
     }
 
     private AEExpression parseLet() throws CompilerException {
-        expect(Keyword.LET);
+        LexerToken expectToken = expect(Keyword.LET);
         List<AEAttribute> attributes = new ArrayList<>();
         attributes.add(this.parseAttribute());
         while (this.lexer.peek().getType() == LexerTokenType.COMMA) {
@@ -280,7 +289,7 @@ public class Parser {
         }
         expect(Keyword.IN);
         AEExpression expression = this.parseExpression();
-        return new AELet(attributes, expression);
+        return new AELet(attributes, expression, expectToken.getRow(), expectToken.getColumn());
 
     }
 
@@ -299,7 +308,8 @@ public class Parser {
             expression = this.parseExpression();
 
         }
-        return new AEAttribute(new AEIdentifier(idToken.getValue()), new Type(typeToken.getValue()), expression);
+        return new AEAttribute(new AEIdentifier(idToken.getValue(), idToken.getRow(), idToken.getColumn()),
+                new Type(typeToken.getValue()), expression, idToken.getRow(), idToken.getColumn());
 
     }
 
@@ -339,7 +349,8 @@ public class Parser {
             this.expect(LexerTokenType.COMMA);
             expressions.add(this.parseExpression());
         }
-        return new AEMethodCall(new AEIdentifier(idToken.getValue()), expressions);
+        return new AEMethodCall(new AEIdentifier(idToken.getValue(), idToken.getRow(), idToken.getColumn()),
+                expressions, idToken.getRow(), idToken.getColumn());
 
     }
 
@@ -351,7 +362,7 @@ public class Parser {
      */
     private AEExpression parseExpressionBlock() throws CompilerException {
         List<AEExpression> expressions = new ArrayList<>();
-        expect(LexerTokenType.LEFT_CURLY_BRACKET);
+        LexerToken expressionBlockToken = expect(LexerTokenType.LEFT_CURLY_BRACKET);
         expressions.add(this.parseExpression());
         expect(LexerTokenType.SEMI_COLON);
         while (this.lexer.peek().getType() != LexerTokenType.RIGHT_CURLY_BRACKET) {
@@ -359,7 +370,7 @@ public class Parser {
             expect(LexerTokenType.SEMI_COLON);
         }
         expect(LexerTokenType.RIGHT_CURLY_BRACKET);
-        return new AEExpressionBlock(expressions);
+        return new AEExpressionBlock(expressions, expressionBlockToken.getRow(), expressionBlockToken.getColumn());
     }
 
     private AEExpression parseRecursiveExpression(AEExpression startExpression) throws CompilerException {
@@ -374,47 +385,55 @@ public class Parser {
             }
             case PLUS: {
                 expect(LexerTokenType.PLUS);
-                return new AEPlus(startExpression, this.parseExpression());
+                return new AEPlus(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
 
             }
             case MINUS: {
                 expect(LexerTokenType.MINUS);
-                return new AEMinus(startExpression, this.parseExpression());
+                return new AEMinus(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
 
             }
             case MULTIPLY: {
                 expect(LexerTokenType.MULTIPLY);
-                return new AEMultiply(startExpression, this.parseExpression());
+                return new AEMultiply(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
             }
             case DIVIDE: {
                 expect(LexerTokenType.DIVIDE);
-                return new AEDivide(startExpression, this.parseExpression());
+                return new AEDivide(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
             }
             case SMALLER: {
                 expect(LexerTokenType.SMALLER);
-                return new AESmaller(startExpression, this.parseExpression());
+                return new AESmaller(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
             }
             case SMALLER_EQUALS: {
                 expect(LexerTokenType.SMALLER_EQUALS);
-                return new AESmallerEquals(startExpression, this.parseExpression());
+                return new AESmallerEquals(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
 
             }
             case EQUALS: {
                 expect(LexerTokenType.EQUALS);
-                return new AEEquals(startExpression, this.parseExpression());
+                return new AEEquals(startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
 
             }
             case ASSIGNMENT: {
                 expect(LexerTokenType.ASSIGNMENT);
-                return new AEAssignment((AEIdentifier) startExpression, this.parseExpression());
+                return new AEAssignment((AEIdentifier) startExpression, this.parseExpression(), decisionToken.getRow(),
+                        decisionToken.getColumn());
             }
             // TODO: Function calls are not parsed correctly
 
             default:
-                
+
                 this.printBetterMessage(this.lexer.getSourceCode(), decisionToken.getRow(), decisionToken.getColumn());
                 throw new CompilerException("Error parsing expression at line  " + decisionToken.getRow() + ", column "
-                        + decisionToken.getColumn() +", got " + decisionToken.getType());
+                        + decisionToken.getColumn() + ", got " + decisionToken.getType());
         }
 
     }
@@ -426,7 +445,9 @@ public class Parser {
             type = new Type(expect(LexerTokenType.TYPE).getValue());
         }
         expect(LexerTokenType.DOT);
-        AEIdentifier identifier = new AEIdentifier(expect(LexerTokenType.ID).getValue());
+        LexerToken identiferToken = expect(LexerTokenType.ID);
+        AEIdentifier identifier = new AEIdentifier(identiferToken.getValue(), identiferToken.getRow(),
+                identiferToken.getColumn());
         expect(LexerTokenType.LEFT_PARANTHESIS);
         List<AEExpression> expressions = new ArrayList<>();
         expressions.add(this.parseExpression());
@@ -435,7 +456,8 @@ public class Parser {
             expressions.add(this.parseExpression());
         }
         expect(LexerTokenType.RIGHT_PARANTHESIS);
-        return new AEObjectMethodCall(startExpression, type, identifier, expressions);
+        return new AEObjectMethodCall(startExpression, type, identifier, expressions, identiferToken.getRow(),
+                identiferToken.getColumn());
 
     }
 
@@ -443,7 +465,8 @@ public class Parser {
         LexerToken idToken = expect(LexerTokenType.ID);
         expect(LexerTokenType.COLON);
         LexerToken typeToken = expect(LexerTokenType.TYPE);
-        return new AEFormal(new AEIdentifier(idToken.getValue()), new Type(typeToken.getValue()));
+        return new AEFormal(new AEIdentifier(idToken.getValue(), idToken.getRow(), idToken.getColumn()),
+                new Type(typeToken.getValue()), idToken.getRow(), idToken.getColumn());
 
     }
 

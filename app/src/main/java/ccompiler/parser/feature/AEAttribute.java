@@ -11,10 +11,12 @@ public class AEAttribute extends AEFeature {
     private Type type;
     private AEExpression expression;
 
-    public AEAttribute(AEIdentifier id, Type type, AEExpression expression) {
+    public AEAttribute(AEIdentifier id, Type type, AEExpression expression, int row, int column) {
         this.identifier = id;
         this.type = type;
         this.expression = expression;
+        this.row = row;
+        this.column = row;
 
     }
 
@@ -25,7 +27,7 @@ public class AEAttribute extends AEFeature {
 
     @Override
     public String toString() {
-        String baseString =  this.identifier.toString() + " : " + this.type.toString();
+        String baseString = this.identifier.toString() + " : " + this.type.toString();
         if (this.expression != null) {
             baseString += " <- " + this.expression.toString();
         }
@@ -33,19 +35,17 @@ public class AEAttribute extends AEFeature {
 
     }
 
-	public AEIdentifier getIdentifier() {
-		return identifier;
-	}
-
+    public AEIdentifier getIdentifier() {
+        return identifier;
+    }
 
     public Type getType() {
         return this.type;
     }
-    
 
-	public AEExpression getExpression() {
-		return expression;
-	}
+    public AEExpression getExpression() {
+        return expression;
+    }
 
     @Override
     public String getGraphRepresentation() {

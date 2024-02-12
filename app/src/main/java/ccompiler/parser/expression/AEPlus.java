@@ -8,9 +8,11 @@ public class AEPlus extends AEExpression {
     private AEExpression leftSide;
     private AEExpression rightSide;
 
-    public AEPlus(AEExpression leftSide, AEExpression rightSide) {
+    public AEPlus(AEExpression leftSide, AEExpression rightSide, int row, int column) {
         this.leftSide = leftSide;
         this.rightSide = rightSide;
+        this.row = row;
+        this.column = column;
     }
 
 	public AEExpression getLeftSide() {

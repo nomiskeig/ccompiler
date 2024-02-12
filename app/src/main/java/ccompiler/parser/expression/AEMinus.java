@@ -8,9 +8,11 @@ public class AEMinus extends AEExpression {
     private AEExpression leftSide;
     private AEExpression rightSide;
 
-    public AEMinus(AEExpression leftSide, AEExpression rightSide) {
+    public AEMinus(AEExpression leftSide, AEExpression rightSide, int row, int column) {
         this.leftSide = leftSide;
         this.rightSide = rightSide;
+        this.row = row;
+        this.column = column;
     }
 
 	public AEExpression getLeftSide() {

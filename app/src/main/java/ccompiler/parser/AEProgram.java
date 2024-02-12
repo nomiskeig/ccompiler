@@ -5,11 +5,13 @@ import java.util.List;
 import ccompiler.CompilerException;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
-public class AEProgram implements AElement {
+public class AEProgram extends AElement {
     private List<AEClass> classes;
 
-    public AEProgram(List<AEClass> classes) {
+    public AEProgram(List<AEClass> classes, int row, int column) {
         this.classes = classes;
+        this.row = row;
+        this.column = column;
     }
 
     public List<AEClass> getClasses() {

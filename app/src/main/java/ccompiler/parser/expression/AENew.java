@@ -7,8 +7,10 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 public class AENew extends AEExpression {
     private Type type;
 
-    public AENew(Type type) {
+    public AENew(Type type, int row, int column) {
         this.type = type;
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

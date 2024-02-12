@@ -4,14 +4,15 @@ import ccompiler.CompilerException;
 import ccompiler.parser.expression.AEIdentifier;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
-public class AEFormal implements AElement{
+public class AEFormal extends AElement{
     private AEIdentifier identifier;
     private Type type;
 
-	public AEFormal(AEIdentifier identifier, Type type) {
+	public AEFormal(AEIdentifier identifier, Type type, int row, int column) {
         this.identifier = identifier;
         this.type = type;
-
+        this.row = row;
+        this.column = column;
 	}
 
 	@Override

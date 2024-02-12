@@ -18,11 +18,13 @@ public class AEFunction extends AEFeature {
     private List<AEFormal> formals;
     private AEExpression expression;
 
-    public AEFunction(AEIdentifier identifier, List<AEFormal> formals, Type type, AEExpression expression) {
+    public AEFunction(AEIdentifier identifier, List<AEFormal> formals, Type type, AEExpression expression, int row, int column) {
         this.identifier = identifier;
         this.type = type;
         this.formals = formals;
         this.expression = expression;
+        this.row = row;
+        this.column = column;
 
     }
 

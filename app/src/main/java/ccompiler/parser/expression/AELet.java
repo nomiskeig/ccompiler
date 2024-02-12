@@ -11,9 +11,11 @@ public class AELet extends AEExpression {
     private List<AEAttribute> attributes;
     private AEExpression expression;
 
-    public AELet(List<AEAttribute> attributes, AEExpression expression) {
+    public AELet(List<AEAttribute> attributes, AEExpression expression, int row, int column) {
         this.attributes = attributes;
         this.expression = expression;
+        this.row = row;
+        this.column = column;
     }
 
     @Override

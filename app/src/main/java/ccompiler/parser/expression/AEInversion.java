@@ -6,8 +6,10 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 public class AEInversion extends AEExpression {
     private AEExpression value;
 
-    public AEInversion(AEExpression value) {
+    public AEInversion(AEExpression value, int row, int column) {
         this.value = value;
+        this.row = row;
+        this.column = column;
     }
 
     public AEExpression getValue() {

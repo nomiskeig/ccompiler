@@ -6,9 +6,11 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 public class AEInteger extends AEExpression {
     private String value;
 
-    public AEInteger(String value) {
+    public AEInteger(String value, int row, int column) {
         this.value = value;
         this.type = new Type("Int");
+        this.row = row;
+        this.column = column;
     }
 
     public String getValue() {

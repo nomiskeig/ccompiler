@@ -5,8 +5,10 @@ import ccompiler.parser.ASTVisitor;
 import ccompiler.semanticAnalysis.typechecking.Type;
 
 public class AETrue extends AEExpression {
-    public AETrue() {
+    public AETrue(int row, int column) {
         this.type = new Type("Bool");
+        this.row = row;
+        this.column = column;
     }
 
 	@Override

@@ -7,8 +7,16 @@ import ccompiler.semanticAnalysis.typechecking.Type;
 public class AEIdentifier extends AEExpression {
     private String value;
 
-    public AEIdentifier(String value) {
+    public AEIdentifier(String value, int row, int column) {
         this.value = value;
+        this.row = row;
+        this.column = column;
+    }
+
+    public AEIdentifier(String value) {
+        this.value= value;
+        this.row = -1;
+        this.column = -1;
     }
 
     public String getValue() {
