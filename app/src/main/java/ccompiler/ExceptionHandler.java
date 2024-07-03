@@ -10,6 +10,9 @@ public final class ExceptionHandler {
         sourceCode = source;
     }
 
+    public static void throwWrongTypeError(AEExpression expression, Type shouldBe) throws CompilerException {
+        throwWrongTypeError(expression, shouldBe, expression.getRow(), expression.getColumn());
+    }
     public static void throwWrongTypeError(AEExpression expression, Type shouldBe, int row, int column) 
             throws CompilerException {
         String message = "Expression " + expression.toString() + " is of type " + expression.getType().toString()

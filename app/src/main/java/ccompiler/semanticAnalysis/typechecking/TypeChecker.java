@@ -126,8 +126,8 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitEnclosedExpression(AEEnclosedExpression aeEnclosedExpression) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitEnclosedExpression'");
+        aeEnclosedExpression.getExpression().acceptVisitor(this);
+        
     }
 
     @Override
@@ -202,8 +202,16 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitWhile(AEWhile aeWhile) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitWhile'");
+        AEExpression cond = aeWhile.getCondExpression();
+        AEExpression body = aeWhile.getBodyExpression();
+        body.acceptVisitor(this);
+        cond.acceptVisitor(this);
+
+        Type condType = cond.getType();
+        if (!condType.equals(new Type("Bool"))) {
+            ExceptionHandler.throwWrongTypeError(cond, new Type("Int"));
+        }
+        aeWhile.setType(new Type("Object"));
     }
 
     @Override

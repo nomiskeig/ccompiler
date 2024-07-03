@@ -127,4 +127,21 @@ class TypeCheckerTest {
 
     }
 
+
+    @Test
+    void validatesWhile() throws CompilerException {
+        String programCode = """
+            class A {
+               function() : Object {
+                    while 1 < 2 loop 5 pool
+        };
+                
+            };
+            """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+
+    }
+
 }
