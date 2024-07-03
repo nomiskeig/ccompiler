@@ -2,7 +2,6 @@ package ccompiler.parser.expression;
 
 import ccompiler.CompilerException;
 import ccompiler.parser.ASTVisitor;
-import ccompiler.semanticAnalysis.typechecking.Type;
 
 public  class AEIsVoid extends AEExpression {
     private AEExpression expression;

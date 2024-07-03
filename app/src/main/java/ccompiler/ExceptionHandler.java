@@ -52,4 +52,11 @@ public final class ExceptionHandler {
 
     }
 
+	public static void throwEqualsError(AEExpression left, AEExpression right) throws CompilerException{
+
+        String message = "Expression " + left.toString() + " can not be compared to expression " + right.toString() + " as the types are not equal. The type of the left side is " + left.getType() + " and the type of the right side " + right.getType();
+        message += "\n\n" + createSourceAnnotation(left.getRow(), left.getColumn());
+        throw new CompilerException(message);
+	}
+
 }

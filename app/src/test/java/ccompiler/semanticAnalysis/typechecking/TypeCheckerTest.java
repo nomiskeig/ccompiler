@@ -144,4 +144,35 @@ class TypeCheckerTest {
 
     }
 
+    @Test
+    void validatesEqual() throws CompilerException {
+        String programCode = """
+            class A {
+               function() : Bool {
+                    1 = 2
+        };
+                
+            };
+            """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+
+    }
+    @Test
+    void validatesWrongEqual() throws CompilerException {
+        String programCode = """
+            class A {
+               function() : Bool {
+                    1 = false 
+        };
+                
+            };
+            """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        Exception ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
+        System.out.println(ex.getMessage());
+
+    }
 }

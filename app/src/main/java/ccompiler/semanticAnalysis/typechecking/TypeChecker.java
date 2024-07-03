@@ -225,8 +225,18 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitEquals(AEEquals aeEquals) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitEquals'");
+        AEExpression leftSide = aeEquals.getLeftSide();
+        AEExpression rightSide = aeEquals.getRightSide();
+        leftSide.acceptVisitor(this);
+        rightSide.acceptVisitor(this);
+        Type leftType = leftSide.getType();
+        Type rightType = rightSide.getType();
+        if (!isFreelyComparable(leftType) || !isFreelyComparable(rightType)) {
+            if (!leftType.equals(rightType)) {
+                ExceptionHandler.throwEqualsError(leftSide, rightSide);
+            }
+        }
+        aeEquals.setType(new Type("Bool"));
     }
 
     @Override
@@ -237,8 +247,9 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitVoid(AEIsVoid aeIsVoid) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitVoid'");
+        AEExpression expr = aeIsVoid.getExpression();
+        expr.acceptVisitor(this);
+        aeIsVoid.setType(new Type("Bool"));
     }
 
     @Override
@@ -247,8 +258,6 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitFalse(AEFalse aeFalse) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitFalse'");
     }
 
     @Override
@@ -294,6 +303,11 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitNew(AENew aeNew) throws CompilerException {
+
+    }
+
+    private boolean isFreelyComparable(Type type) {
+        return !type.equals(new Type("Bool")) && !type.equals(new Type("Int")) && !type.equals(new Type("String"));
 
     }
 

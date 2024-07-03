@@ -3,7 +3,6 @@ package ccompiler.lexer;
 
 import org.junit.jupiter.api.Test;
 
-import ccompiler.parser.ParseException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
