@@ -175,4 +175,19 @@ class TypeCheckerTest {
         System.out.println(ex.getMessage());
 
     }
+    @Test
+    void validatesNot() throws CompilerException {
+        String programCode = """
+            class A {
+               function() : Bool {
+                   not true 
+        };
+                
+            };
+            """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+
+    }
 }

@@ -22,6 +22,7 @@ import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
 import ccompiler.parser.expression.AENew;
+import ccompiler.parser.expression.AENot;
 import ccompiler.parser.expression.AEPlus;
 import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
@@ -192,4 +193,10 @@ public class MethodAndObjectCollector implements ASTVisitor {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'visitNew'");
     }
+
+	@Override
+	public void visitNot(AENot eaNot) throws CompilerException {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'visitNot'");
+	}
 }

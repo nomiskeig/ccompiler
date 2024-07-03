@@ -25,6 +25,7 @@ import ccompiler.parser.expression.AELet;
 import ccompiler.parser.expression.AEMinus;
 import ccompiler.parser.expression.AEMultiply;
 import ccompiler.parser.expression.AENew;
+import ccompiler.parser.expression.AENot;
 import ccompiler.parser.expression.AEPlus;
 import ccompiler.parser.expression.AESmaller;
 import ccompiler.parser.expression.AETrue;
@@ -303,12 +304,26 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitNew(AENew aeNew) throws CompilerException {
+        // TODO: this does not handle SELF_TYPE
+        Type newType = aeNew.getType();
+        aeNew.setType(newType);
 
     }
 
+	@Override
+	public void visitNot(AENot eaNot) throws CompilerException {
+        AEExpression expression = eaNot.getExpression();
+        expression.acceptVisitor(this);
+        Type exprType = expression.getType();
+        if (!exprType.equals(new Type("Bool"))) {
+            ExceptionHandler.throwWrongTypeError(expression, new Type("Bool"));
+        }
+        eaNot.setType(new Type("Bool"));
+	}
     private boolean isFreelyComparable(Type type) {
         return !type.equals(new Type("Bool")) && !type.equals(new Type("Int")) && !type.equals(new Type("String"));
 
     }
+
 
 }
