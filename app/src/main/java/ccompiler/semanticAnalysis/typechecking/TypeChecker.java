@@ -99,7 +99,7 @@ public class TypeChecker implements ASTVisitor {
         Type exprType = expr.getType();
         if (!this.typeHierarchy.isSubClass(exprType, attribute.getType())) {
             ExceptionHandler.throwWrongTypeError(expr, attribute.getType(), attribute.getRow(), attribute.getColumn());
-            
+
         }
     }
 
@@ -128,7 +128,7 @@ public class TypeChecker implements ASTVisitor {
     @Override
     public void visitEnclosedExpression(AEEnclosedExpression aeEnclosedExpression) throws CompilerException {
         aeEnclosedExpression.getExpression().acceptVisitor(this);
-        
+
     }
 
     @Override
@@ -242,8 +242,34 @@ public class TypeChecker implements ASTVisitor {
 
     @Override
     public void visitLet(AELet aeLet) throws CompilerException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'visitLet'");
+        // TODO: this is missing the case without init
+        List<AEAttribute> attributes = aeLet.getAttributes();
+        if (attributes.size() > 1) {
+            // construbct a new aeLet and validate it;
+            AELet innerLet = new AELet(attributes.subList(1, attributes.size()), aeLet.getExpression(), aeLet.getRow(),
+                    aeLet.getColumn());
+            AELet outerLet = new AELet(attributes.subList(0, 1), innerLet, aeLet.getRow(), aeLet.getColumn());
+            this.visitLet(outerLet);
+            aeLet.setType(outerLet.getType());
+            return;
+        }
+        if (attributes.size() == 1) {
+            // only one attribute
+            AEAttribute attribute = attributes.getFirst();
+            AEExpression expr = attribute.getExpression();
+            expr.acceptVisitor(this);
+            Type exprType = expr.getType();
+            if (!this.typeHierarchy.isSubClass(exprType, attribute.getType())) {
+                ExceptionHandler.throwWrongTypeError(expr, attribute.getType());
+            }
+            this.objects.addSubstitution(this.currentClass, attribute.getIdentifier(), attribute.getType());
+            AEExpression bodyExpr = aeLet.getExpression();
+            bodyExpr.acceptVisitor(this);
+            this.objects.clearSubstitutions(this.currentClass);
+            Type bodyType = bodyExpr.getType();
+            System.out.println("set the type + "+  bodyType);
+            aeLet.setType(bodyType);
+        }
     }
 
     @Override
@@ -310,8 +336,8 @@ public class TypeChecker implements ASTVisitor {
 
     }
 
-	@Override
-	public void visitNot(AENot eaNot) throws CompilerException {
+    @Override
+    public void visitNot(AENot eaNot) throws CompilerException {
         AEExpression expression = eaNot.getExpression();
         expression.acceptVisitor(this);
         Type exprType = expression.getType();
@@ -319,11 +345,11 @@ public class TypeChecker implements ASTVisitor {
             ExceptionHandler.throwWrongTypeError(expression, new Type("Bool"));
         }
         eaNot.setType(new Type("Bool"));
-	}
+    }
+
     private boolean isFreelyComparable(Type type) {
         return !type.equals(new Type("Bool")) && !type.equals(new Type("Int")) && !type.equals(new Type("String"));
 
     }
-
 
 }

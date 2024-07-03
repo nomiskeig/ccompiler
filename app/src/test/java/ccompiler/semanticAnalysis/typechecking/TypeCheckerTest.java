@@ -94,50 +94,49 @@ class TypeCheckerTest {
     @Test
     void validatesInheritanceIf() throws CompilerException {
         String programCode = """
-                    class A {
-                };
-                class B inherits A {
+                            class A {
+                        };
+                        class B inherits A {
 
-                };
-                class C inherits A {
+                        };
+                        class C inherits A {
 
-                };
-                class D {
-                    a: A;
-                    b: B;
-                    c: C;
-                    function1() : A {
-                        if 1 < 2 then b else c fi
-                };
-                    function2() : A {
-                        {
-                            a <- new B;
-                            b;
+                        };
+                        class D {
+                            a: A;
+                            b: B;
+                            c: C;
+                            function1() : A {
+                                if 1 < 2 then b else c fi
+                        };
+                            function2() : A {
+                                {
+                                    a <- new B;
+                                    b;
 
-        }
-        };
-
+                }
                 };
 
+                        };
 
-                """;
+
+                        """;
         AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
 
     }
 
-
     @Test
     void validatesWhile() throws CompilerException {
         String programCode = """
-            class A {
-               function() : Object {
-                    while 1 < 2 loop 5 pool
-        };
-                
-            };
-            """;
+                    class A {
+                       function() : Object {
+                            while 1 < 2 loop 5 pool
+                };
+
+                    };
+                    """;
         AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
@@ -147,28 +146,78 @@ class TypeCheckerTest {
     @Test
     void validatesEqual() throws CompilerException {
         String programCode = """
-            class A {
-               function() : Bool {
-                    1 = 2
-        };
-                
-            };
-            """;
+                    class A {
+                       function() : Bool {
+                            1 = 2
+                };
+
+                    };
+                    """;
         AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
 
     }
+
     @Test
     void validatesWrongEqual() throws CompilerException {
         String programCode = """
-            class A {
-               function() : Bool {
-                    1 = false 
-        };
-                
-            };
-            """;
+                    class A {
+                       function() : Bool {
+                            1 = false
+                };
+
+                    };
+                    """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        Exception ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
+        System.out.println(ex.getMessage());
+
+    }
+
+    @Test
+    void validatesNot() throws CompilerException {
+        String programCode = """
+                    class A {
+                       function() : Bool {
+                           not true
+                };
+
+                    };
+                    """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+
+    }
+
+    @Test
+    void validatesSingleLet() throws CompilerException {
+        String programCode = """
+                    class A {
+                       function() : Int {
+                        let x: Int <- 1 in x + 1
+                };
+
+                    };
+                    """;
+        AEProgram program = Utils.createProgram(programCode);
+        program.acceptVisitor(this.collector);
+        assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
+
+    }
+
+    @Test
+    void checksWrongLetAttributeType() throws CompilerException {
+        String programCode = """
+                    class A {
+                       function() : Int {
+                        let x: Int <- "abc" in x + 1
+                };
+
+                    };
+                    """;
         AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         Exception ex = assertThrows(CompilerException.class, () -> program.acceptVisitor(this.tc));
@@ -176,15 +225,15 @@ class TypeCheckerTest {
 
     }
     @Test
-    void validatesNot() throws CompilerException {
+    void validatesMultipleLet() throws CompilerException {
         String programCode = """
-            class A {
-               function() : Bool {
-                   not true 
-        };
-                
-            };
-            """;
+                    class A {
+                       function() : Int {
+                        let x: Int <- 1, y: Int <- 2 in x + y
+                };
+
+                    };
+                    """;
         AEProgram program = Utils.createProgram(programCode);
         program.acceptVisitor(this.collector);
         assertDoesNotThrow(() -> program.acceptVisitor(this.tc));
